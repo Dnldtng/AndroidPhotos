@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,14 +43,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Album album = albumList.get(position);
         holder.albumName.setText(album.getName());
 
-        /*
-        //File imgFile = new File(album.getPhotosList().get(0).getPath());
-        //File imgFile = new File("/storage/emulated/0/Download/Medium_WW230176.jpg");
-        Bitmap myBitmap = BitmapFactory.decodeFile("/storage/emulated/0/Download/Medium_WW230176.jpg");
-        holder.image.setImageBitmap(myBitmap);
-        */
+        // Delete button listener for each album list item. TODO Add saving stuff
+        holder.deleteButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Album albumToDelete = albumList.get(position);
+                albumList.remove(albumToDelete);
+                notifyItemRemoved(position);
+            }
+        });
 
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -58,12 +64,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView image;
         TextView albumName;
+        Button deleteButton;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             albumName = itemView.findViewById(R.id.textView);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
         }
     }
 }
