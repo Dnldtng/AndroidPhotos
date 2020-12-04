@@ -1,6 +1,8 @@
 package com.example.androidphotos80;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidphotos80.model.Album;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +41,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Album album = albumList.get(position);
         holder.albumName.setText(album.getName());
-        //holder.image.setImageResource();
+
+        //File imgFile = new File(album.getPhotosList().get(0).getPath());
+        //File imgFile = new File("/storage/emulated/0/Download/Medium_WW230176.jpg");
+        Bitmap myBitmap = BitmapFactory.decodeFile("/storage/emulated/0/Download/Medium_WW230176.jpg");
+        holder.image.setImageBitmap(myBitmap);
+
+
     }
 
     @Override
@@ -53,7 +62,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            //image = itemView.findViewById(R.id.imageView);
+            image = itemView.findViewById(R.id.imageView);
             albumName = itemView.findViewById(R.id.textView);
         }
     }

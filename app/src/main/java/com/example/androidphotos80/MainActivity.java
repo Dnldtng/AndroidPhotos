@@ -3,9 +3,12 @@ package com.example.androidphotos80;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.example.androidphotos80.model.Album;
+import com.example.androidphotos80.model.Photo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -16,7 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
+import android.widget.ImageView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,14 +48,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     private List<Album> albumList = new ArrayList<>();
     private String[] names = {"album1", "album2"};
+    private String[] imagePaths = {"/storage/emulated/0/Download/Medium_WW230176.jpg", "/storage/emulated/0/Download/Medium_WW230176.jpg"};
     private RecyclerView recyclerView;
 
     private void prepareTheList(){
         int count = 0;
         for(String name: names){
             Album album = new Album(name);
+            album.addPhoto(new Photo("/storage/emulated/0/Download/Medium_WW230176.jpg"));
             albumList.add(album);
         }
     }
