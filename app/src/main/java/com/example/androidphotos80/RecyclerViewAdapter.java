@@ -52,10 +52,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 notifyItemRemoved(position);
             }
         });
-
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -66,7 +63,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         TextView albumName;
         Button deleteButton;
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
