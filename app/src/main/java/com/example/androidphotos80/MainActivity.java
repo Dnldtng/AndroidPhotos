@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
     private List<Album> albumList = new ArrayList<>();
     private String[] names = {"album1", "album2"};
     private String[] imagePaths = {"/storage/emulated/0/Download/Medium_WW230176.jpg", "/storage/emulated/0/Download/Medium_WW230176.jpg"};

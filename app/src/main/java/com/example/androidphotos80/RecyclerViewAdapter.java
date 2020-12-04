@@ -42,11 +42,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Album album = albumList.get(position);
         holder.albumName.setText(album.getName());
 
+        /*
         //File imgFile = new File(album.getPhotosList().get(0).getPath());
         //File imgFile = new File("/storage/emulated/0/Download/Medium_WW230176.jpg");
         Bitmap myBitmap = BitmapFactory.decodeFile("/storage/emulated/0/Download/Medium_WW230176.jpg");
         holder.image.setImageBitmap(myBitmap);
-
+        */
 
     }
 
@@ -62,7 +63,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            image = itemView.findViewById(R.id.imageView);
             albumName = itemView.findViewById(R.id.textView);
         }
     }
