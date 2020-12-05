@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     public static void verifyStoragePermissions(Activity activity) {
         // Check if we have write permission
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
         if (permission != PackageManager.PERMISSION_GRANTED) {
             // We don't have permission so prompt the user
             ActivityCompat.requestPermissions(
@@ -81,8 +80,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         FloatingActionButton fab = findViewById(R.id.fab);
 
         // Alert Dialaog Stuff
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Title");
+        builder.setCancelable(true);
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
@@ -95,8 +95,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                 // New album text now has needed string, just need to add logic /  update the adapter and say there was a new thing added i think?
                 Album newAlbum = new Album(newAlbumText);
                 albumList.add(newAlbum);
-                adapter.notifyItemInserted(albumList.size() - 1);
 
+                //adapter.notifyItemInserted(albumList.size() - 1);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -107,11 +108,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             }
         });
 
+        final AlertDialog alert = builder.create();
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Show the alert dialog
-                builder.show();
+                input.setText("");
+                alert.show();
             }
         });
 
