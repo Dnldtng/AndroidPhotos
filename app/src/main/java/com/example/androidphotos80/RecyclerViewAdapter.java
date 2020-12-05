@@ -29,11 +29,13 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
     private List<Album> albumList;
+    private OnNoteListener mOnNoteListener;
     private Context context;
     private String renameAlbumText;
 
-    public RecyclerViewAdapter(List<Album> albumList, Context context) {
+    public RecyclerViewAdapter(List<Album> albumList, OnNoteListener onNoteListener, Context context) {
         this.albumList = albumList;
+        this.mOnNoteListener = onNoteListener;
         this.context = context;
     }
 
@@ -42,40 +44,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent , false);
-        ViewHolder holder  = new ViewHolder(view);
+        ViewHolder holder  = new ViewHolder(view, mOnNoteListener);
         return holder;
-    }
-
-
-    //Deprecated **
-    public void showRenameDialog(){
-        // Alert Dialog Stuff
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Rename Album");
-        builder.setCancelable(true);
-        final EditText input = new EditText(context);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
-
-        // Set up the buttons
-        builder.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                renameAlbumText = input.getText().toString();
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        final AlertDialog alert = builder.create();
-
-        alert.show();
-
     }
 
     @Override
@@ -137,17 +107,36 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return albumList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView albumName;
         Button deleteButton;
         Button renameButton;
+        OnNoteListener onNoteListener;
 
-        public ViewHolder(@NonNull View itemView) {
+
+        public ViewHolder(@NonNull View itemView, OnNoteListener onNoteListener) {
             super(itemView);
             albumName = itemView.findViewById(R.id.textView);
             deleteButton = itemView.findViewById(R.id.deleteButton);
+
             renameButton = itemView.findViewById(R.id.renameButton);
+
+            itemView.setOnClickListener(this);
+            this.onNoteListener = onNoteListener;
+        }
+
+        @Override
+        public void onClick(View view) {
+            onNoteListener.onNoteClick(getAdapterPosition());
         }
     }
+
+    public interface OnNoteListener {
+        void onNoteClick(int position);
+    }
 }
+

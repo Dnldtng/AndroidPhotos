@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         prepareTheList();
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(albumList, this);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(albumList,  this, this);
         recyclerView.setAdapter(adapter);
         FloatingActionButton fab = findViewById(R.id.fab);
 
@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                 // New album text now has needed string, just need to add logic /  update the adapter and say there was a new thing added i think?
                 Album newAlbum = new Album(newAlbumText);
                 albumList.add(newAlbum);
-
                 //adapter.notifyItemInserted(albumList.size() - 1);
                 adapter.notifyDataSetChanged();
             }
@@ -118,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                 alert.show();
             }
         });
-
     }
 
     @Override
