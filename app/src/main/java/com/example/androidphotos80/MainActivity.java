@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,7 +30,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.OnNoteListener{
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         prepareTheList();
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(albumList);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(albumList, this);
         recyclerView.setAdapter(adapter);
         FloatingActionButton fab = findViewById(R.id.fab);
 
@@ -92,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 newAlbumText = input.getText().toString();
                 // New album text now has needed string, just need to add logic /  update the adapter and say there was a new thing added i think?
+                Album newAlbum = new Album(newAlbumText);
+                albumList.add(newAlbum);
+                adapter.notifyItemInserted(albumList.size() - 1);
 
             }
         });
@@ -110,6 +114,16 @@ public class MainActivity extends AppCompatActivity {
                 builder.show();
             }
         });
+
+    }
+
+    @Override
+    public void onNoteClick(int position) {
+        //gives reference to item selected
+        albumList.get(position);
+
+        Intent intent = new Intent(this, OpenedAlbum.class);
+        startActivity(intent);
 
     }
 }

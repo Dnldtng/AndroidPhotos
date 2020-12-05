@@ -25,16 +25,19 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
     private List<Album> albumList;
+    private OnNoteListener mOnNoteListener;
 
-    public RecyclerViewAdapter(List<Album> albumList) {
+    public RecyclerViewAdapter(List<Album> albumList, OnNoteListener onNoteListener) {
         this.albumList = albumList;
+        this.mOnNoteListener = onNoteListener;
     }
+
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent , false);
-        ViewHolder holder  = new ViewHolder(view);
+        ViewHolder holder  = new ViewHolder(view, mOnNoteListener);
         return holder;
     }
 
@@ -60,15 +63,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return albumList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView albumName;
         Button deleteButton;
+        OnNoteListener onNoteListener;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, OnNoteListener onNoteListener) {
             super(itemView);
             albumName = itemView.findViewById(R.id.textView);
             deleteButton = itemView.findViewById(R.id.deleteButton);
+            itemView.setOnClickListener(this);
+            this.onNoteListener = onNoteListener;
+        }
+
+        @Override
+        public void onClick(View view) {
+            onNoteListener.onNoteClick(getAdapterPosition());
         }
     }
+
+    public interface OnNoteListener {
+        void onNoteClick(int position);
+    }
 }
+
