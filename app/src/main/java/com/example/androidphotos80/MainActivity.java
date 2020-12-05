@@ -74,13 +74,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         prepareTheList();
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(albumList);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(albumList, this);
         recyclerView.setAdapter(adapter);
         FloatingActionButton fab = findViewById(R.id.fab);
 
         // Alert Dialaog Stuff
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Title");
+        builder.setTitle("Add New Album");
         builder.setCancelable(true);
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
