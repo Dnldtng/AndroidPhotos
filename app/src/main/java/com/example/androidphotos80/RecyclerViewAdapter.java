@@ -50,6 +50,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Album albumToDelete = albumList.get(position);
                 albumList.remove(albumToDelete);
                 notifyItemRemoved(position);
+                notifyDataSetChanged();
             }
         });
     }

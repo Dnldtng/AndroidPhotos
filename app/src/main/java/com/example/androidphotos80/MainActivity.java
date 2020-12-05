@@ -2,6 +2,8 @@ package com.example.androidphotos80;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,7 +20,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.InputType;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private String[] names = {"album1", "album2"};
     private String[] imagePaths = {"/storage/emulated/0/Download/Medium_WW230176.jpg", "/storage/emulated/0/Download/Medium_WW230176.jpg"};
     private RecyclerView recyclerView;
+    private String newAlbumText;
 
     private void prepareTheList(){
         int count = 0;
@@ -61,26 +66,48 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         prepareTheList();
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(albumList);
         recyclerView.setAdapter(adapter);
-
         FloatingActionButton fab = findViewById(R.id.fab);
+
+        // Alert Dialaog Stuff
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Title");
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                newAlbumText = input.getText().toString();
+                // New album text now has needed string, just need to add logic /  update the adapter and say there was a new thing added i think?
+
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                // Show the alert dialog
+                builder.show();
             }
         });
 
