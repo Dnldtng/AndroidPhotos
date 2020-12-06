@@ -23,10 +23,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.InputType;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,6 +128,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         albumList.get(position);
 
         Intent intent = new Intent(this, OpenedAlbum.class);
+        intent.putExtra("albums", (Serializable) albumList);
+        intent.putExtra("albumPosition", position);
         startActivity(intent);
 
     }

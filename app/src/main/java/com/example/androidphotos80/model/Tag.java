@@ -1,6 +1,9 @@
 package com.example.androidphotos80.model;
 
-public class Tag {
+import java.io.Serializable;
+
+public class Tag implements Serializable {
+    private static final long serialVersionUID = 4420084517420071942L;
     static final int LOCATION = 1;
     static final int PERSON = 2;
 
