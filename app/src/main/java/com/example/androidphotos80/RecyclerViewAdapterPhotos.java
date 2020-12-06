@@ -1,12 +1,16 @@
 package com.example.androidphotos80;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidphotos80.model.Album;
+import com.example.androidphotos80.model.Photo;
 
 import java.util.List;
 
@@ -14,17 +18,22 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
 
     private List<Album> albumList;
     private RecyclerViewAdapter.OnNoteListener mOnNoteListener;
-
+    private Context context;
+    private Album album;
+    private List<Photo> photoList;
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        // Need to make the layout list item and attach below to view
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_photolistitem, parent , false);
+        RecyclerViewAdapterPhotos.ViewHolder holder  = new RecyclerViewAdapterPhotos.ViewHolder(view);
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        // Load image into imageview
     }
 
     @Override
@@ -34,7 +43,15 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        OnNoteListener onNoteListener;
+        ImageView thumbnail;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            thumbnail = itemView.findViewById(R.id.photoThumbnail);
+
+            // All of our buttons connecting to the stuff
+
+        }
 
         @Override
         public void onClick(View view) {
