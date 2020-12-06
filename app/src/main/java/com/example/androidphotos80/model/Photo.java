@@ -1,14 +1,14 @@
 package com.example.androidphotos80.model;
 
+import android.net.Uri;
+
 import java.io.Serializable;
+import java.net.URI;
 import java.util.Date;
 import java.util.ArrayList;
 
 public class Photo implements Serializable {
     private static final long serialVersionUID = 5771854261828268090L;
-
-    //TODO bitmap?
-    //private SerializableBitmap bitmap;
 
     /**
      * Tag list for photo
@@ -20,10 +20,6 @@ public class Photo implements Serializable {
      */
     private String caption = "";
 
-    /**
-     * Date object for photo date
-     */
-    private Date photoDate;
 
     /**
      * Path string of photo
@@ -38,6 +34,7 @@ public class Photo implements Serializable {
         this.path = p;
     }
 
+
     /**
      * Returns path string of photo
      * @return Path string
@@ -45,6 +42,7 @@ public class Photo implements Serializable {
     public String getPath() {
         return this.path;
     }
+
 
     /**
      * Adds tag to tag list
@@ -74,15 +72,6 @@ public class Photo implements Serializable {
         }
         return sb.toString();
     }
-
-    /**
-     * Returns the photos date
-     * @return Date object
-     */
-    public Date getPhotoDate() {
-        return photoDate;
-    }
-
 
     /**
      * Removes a tag from the tag list
