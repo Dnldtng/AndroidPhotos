@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.androidphotos80">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -13,9 +17,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidPhotos80">
         <activity
+            android:name=".DisplayPhoto"
+            android:label="@string/title_activity_display_photo"
+            android:theme="@style/Theme.AndroidPhotos80.NoActionBar" />
+        <activity
             android:name=".OpenedAlbum"
             android:label="@string/title_activity_opened_album"
-            android:theme="@style/Theme.AndroidPhotos80.NoActionBar"></activity>
+            android:theme="@style/Theme.AndroidPhotos80.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"

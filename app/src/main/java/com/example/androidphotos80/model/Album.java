@@ -2,9 +2,11 @@ package com.example.androidphotos80.model;
 
 
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Album {
+public class Album implements Serializable {
+    private static final long serialVersionUID = 4106797422494775891L;
     private String name;
     private ArrayList<Photo> photos;
 

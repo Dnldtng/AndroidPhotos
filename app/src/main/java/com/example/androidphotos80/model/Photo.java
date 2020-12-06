@@ -1,9 +1,15 @@
 package com.example.androidphotos80.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.ArrayList;
 
-public class Photo {
+public class Photo implements Serializable {
+    private static final long serialVersionUID = 5771854261828268090L;
+
+    //TODO bitmap?
+    //private SerializableBitmap bitmap;
+
     /**
      * Tag list for photo
      */

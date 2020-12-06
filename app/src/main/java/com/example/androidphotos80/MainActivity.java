@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,6 +126,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         albumList.get(position);
 
         Intent intent = new Intent(this, OpenedAlbum.class);
+        intent.putExtra("albums", (Serializable) albumList);
+        intent.putExtra("albumPosition", position);
         startActivity(intent);
 
     }
