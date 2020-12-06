@@ -17,10 +17,13 @@ import java.util.List;
 public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerViewAdapterPhotos.ViewHolder> {
 
     private List<Album> albumList;
-    private RecyclerViewAdapter.OnNoteListener mOnNoteListener;
     private Context context;
-    private Album album;
     private List<Photo> photoList;
+
+    public RecyclerViewAdapterPhotos( Context context, List<Photo> photoList) {
+        this.context = context;
+        this.photoList = photoList;
+    }
 
     @NonNull
     @Override
@@ -34,11 +37,13 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Load image into imageview
+
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return photoList.size();
+        //return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
