@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.androidphotos80.model.Album;
 
 import java.util.List;
-/*
+
 public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerViewAdapterPhotos.ViewHolder> {
 
     private List<Album> albumList;
     private RecyclerViewAdapter.OnNoteListener mOnNoteListener;
 
-   /*
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,8 +33,8 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-      //  OnNoteListener onNoteListener;
-      //  Button
+
+        OnNoteListener onNoteListener;
 
         @Override
         public void onClick(View view) {
@@ -42,4 +42,3 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
         }
     }
 }
-*/
