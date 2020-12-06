@@ -1,6 +1,7 @@
 package com.example.androidphotos80;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,16 +38,17 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Load image into imageview
-
+        Photo photo = photoList.get(position);
+        // URI to bitmap
+        holder.thumbnail.setImageURI(Uri.parse(photo.getPath()));
     }
 
     @Override
     public int getItemCount() {
         return photoList.size();
-        //return 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView thumbnail;
 
@@ -54,13 +56,7 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
             super(itemView);
             thumbnail = itemView.findViewById(R.id.photoThumbnail);
 
-            // All of our buttons connecting to the stuff
-
         }
 
-        @Override
-        public void onClick(View view) {
-
-        }
     }
 }

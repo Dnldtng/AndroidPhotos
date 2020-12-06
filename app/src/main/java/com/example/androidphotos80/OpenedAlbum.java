@@ -13,6 +13,8 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +30,7 @@ public class OpenedAlbum extends AppCompatActivity {
     private Album selectedAlbum;
     private int albumIndex;
     private List<Photo> photoList = new ArrayList<>();
+    RecyclerViewAdapterPhotos adapter;
 
     public void addButton(View view){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
@@ -43,7 +46,10 @@ public class OpenedAlbum extends AppCompatActivity {
         // Got our image, need to add it to photoList
         if(requestCode == 20 && resultCode == Activity.RESULT_OK){
             Uri photoUri = data.getData();
-            System.out.println(photoUri);
+            System.out.println("This is the print: " + photoUri);
+            Photo photoToAdd = new Photo(photoUri.toString());
+            photoList.add(photoToAdd);
+            adapter.notifyDataSetChanged();
         }
 
     }
@@ -58,11 +64,11 @@ public class OpenedAlbum extends AppCompatActivity {
         Intent intent = getIntent();
         albumList = (ArrayList<Album>) intent.getSerializableExtra("albums");
         albumIndex = intent.getIntExtra("albumPosition", 0);
-        recyclerView = findViewById(R.id.recyclerView);
-
+        recyclerView = findViewById(R.id.recyclerView2);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         selectedAlbum = albumList.get(albumIndex);
 
-        RecyclerViewAdapterPhotos adapter = new RecyclerViewAdapterPhotos(this, photoList);
+        adapter = new RecyclerViewAdapterPhotos(this, photoList);
         recyclerView.setAdapter(adapter);
 
         //TODO add a recyclerView for the photos, be able to first load/save the photos, then make it so we can click the cells, also need to make the buttons open up dialogs.
