@@ -38,10 +38,11 @@ public class OpenedAlbum extends AppCompatActivity {
 
         //this was causing null pointer because no adapter attached
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         selectedAlbum = albumList.get(albumIndex);
         //prepareTheList();
         //Todo make another recyclerViewAdapter class?!
-        //RecyclerViewAdapterPhotos adapter = new RecyclerViewAdapter(,  this, this);
+        //RecyclerViewAdapterPhotos adapter = new RecyclerViewAdapter(  this, this);
         //recyclerView.setAdapter(adapter);
 
         //TODO add a recyclerView for the photos, be able to first load/save the photos, then make it so we can click the cells, also need to make the buttons open up dialogs.
