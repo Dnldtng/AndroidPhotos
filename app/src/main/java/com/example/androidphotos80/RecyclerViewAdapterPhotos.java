@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,10 +38,10 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // Load image into imageview
+        // Load image into imageView
         Photo photo = photoList.get(position);
-        // URI to bitmap
         holder.thumbnail.setImageURI(Uri.parse(photo.getPath()));
+        holder.photoName.setText(photo.getCaption());
     }
 
     @Override
@@ -51,11 +52,12 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView thumbnail;
+        TextView photoName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             thumbnail = itemView.findViewById(R.id.photoThumbnail);
-
+            photoName = itemView.findViewById(R.id.photoName);
         }
 
     }

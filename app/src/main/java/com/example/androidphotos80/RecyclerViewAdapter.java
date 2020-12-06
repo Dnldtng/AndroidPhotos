@@ -97,7 +97,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 alert.show();
             }
         });
-
     }
 
     @Override
