@@ -87,6 +87,7 @@ public class OpenedAlbum extends AppCompatActivity {
             public void onItemClick(int position) {
                 selectedPhoto = photoList.get(position);
                 System.out.println("selected");
+
                 //TODO highlight the selected item
             }
         });

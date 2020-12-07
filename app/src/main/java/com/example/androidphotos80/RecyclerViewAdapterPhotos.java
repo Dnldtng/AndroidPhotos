@@ -76,6 +76,7 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION){
                             listener.onItemClick(position);
+git status
                         }
                     }
                 }
