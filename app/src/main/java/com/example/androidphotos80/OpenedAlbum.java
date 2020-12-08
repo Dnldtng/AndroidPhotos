@@ -74,6 +74,10 @@ public class OpenedAlbum extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         selectedAlbum = albumList.get(albumIndex);
 
+        //prob dont need
+        //!!!omg this dumb ass line was fucking it up!
+        //photoList = selectedAlbum.getPhotosList();
+
         adapter = new RecyclerViewAdapterPhotos(this, photoList);
         recyclerView.setAdapter(adapter);
 
