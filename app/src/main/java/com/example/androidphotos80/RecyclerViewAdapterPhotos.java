@@ -61,14 +61,14 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
             super(itemView);
             thumbnail = itemView.findViewById(R.id.photoThumbnail);
             photoName = itemView.findViewById(R.id.photoName);
-            itemView.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    if(listener != null){
-                        int position = getAdapterPosition();
-                        if(position != RecyclerView.NO_POSITION){
-                            listener.onItemClick(position);
-                        }
+
+            // had to replace with lambdas for some reason
+            // itemView.setOnClickListener(new View.OnClickListener(){
+            itemView.setOnClickListener(view -> {
+                if(listener != null){
+                    int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION){
+                        listener.onItemClick(position);
                     }
                 }
             });
