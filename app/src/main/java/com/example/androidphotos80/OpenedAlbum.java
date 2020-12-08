@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.androidphotos80.model.Album;
+import com.example.androidphotos80.model.DataRW;
 import com.example.androidphotos80.model.Photo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -26,13 +27,14 @@ import java.util.List;
 import java.util.function.ToDoubleBiFunction;
 
 public class OpenedAlbum extends AppCompatActivity {
-    private List<Album> albumList = new ArrayList<>();
+    private ArrayList<Album> albumList;
     private RecyclerView recyclerView;
     private RecyclerViewAdapterPhotos adapter;
     private Album selectedAlbum;
     private int albumIndex;
-    private List<Photo> photoList = new ArrayList<>();
+    private ArrayList<Photo> photoList;
     private Photo selectedPhoto;
+    private String path;
 
     public void addButton(View view){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
@@ -54,6 +56,8 @@ public class OpenedAlbum extends AppCompatActivity {
             System.out.println("File PATH: " + photoFile.getAbsolutePath());
             photoToAdd.setCaption(photoFile.getName());
             photoList.add(photoToAdd);
+            // Save data
+            DataRW.writeData(albumList, path);
             adapter.notifyDataSetChanged();
         }else{
             // Error dialog?
@@ -68,6 +72,8 @@ public class OpenedAlbum extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        path = this.getApplicationContext().getFilesDir() + "/albums.dat";
+
         Intent intent = getIntent();
         albumList = (ArrayList<Album>) intent.getSerializableExtra("albums");
         albumIndex = intent.getIntExtra("albumPosition", 0);
@@ -78,7 +84,7 @@ public class OpenedAlbum extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         selectedAlbum = albumList.get(albumIndex);
-
+        photoList = selectedAlbum.getPhotosList();
 
 
         //prob dont need
@@ -93,7 +99,7 @@ public class OpenedAlbum extends AppCompatActivity {
 
         adapter.setOnItemClickListener(position -> {
             selectedPhoto = photoList.get(position);
-            System.out.println("selected");
+            System.out.println("selected" + selectedPhoto);
 
             //TODO highlight the selected item
         });
