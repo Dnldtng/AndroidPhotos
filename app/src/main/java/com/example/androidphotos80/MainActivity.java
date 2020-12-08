@@ -59,9 +59,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         }
     }
 
-    private ArrayList<Album> albumList = new ArrayList<>();
+    private ArrayList<Album> albumList;
     private String[] names = {"album1", "album2"};
-    private String[] imagePaths = {"/storage/emulated/0/Download/Medium_WW230176.jpg", "/storage/emulated/0/Download/Medium_WW230176.jpg"};
     private RecyclerView recyclerView;
     private String newAlbumText;
     private String path;
@@ -70,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         int count = 0;
         for(String name: names){
             Album album = new Album(name);
-            album.addPhoto(new Photo("/storage/emulated/0/Download/Medium_WW230176.jpg"));
             albumList.add(album);
         }
     }
@@ -111,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //prepareTheList();
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(albumList,  this, this);
         recyclerView.setAdapter(adapter);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -167,6 +164,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         intent.putExtra("albums", (Serializable) albumList);
         intent.putExtra("albumPosition", position);
         startActivity(intent);
+
+
 
     }
 }

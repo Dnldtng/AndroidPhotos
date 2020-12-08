@@ -14,17 +14,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.androidphotos80.model.Album;
 import com.example.androidphotos80.model.Photo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerViewAdapterPhotos.ViewHolder> {
 
-    private List<Album> albumList;
+    private ArrayList<Album> albumList;
     private Context context;
-    private List<Photo> photoList;
+    private ArrayList<Photo> photoList;
     private OnItemClickListener mListener;
     private String path;
+    private int selected_position = 0;
+    private int position;
 
-    public RecyclerViewAdapterPhotos( Context context, List<Photo> photoList) {
+    public RecyclerViewAdapterPhotos(Context context, ArrayList<Photo> photoList) {
         this.context = context;
         this.photoList = photoList;
         path = context.getFilesDir() + "/albums.dat";
@@ -46,6 +49,8 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
         Photo photo = photoList.get(position);
         holder.thumbnail.setImageURI(Uri.parse(photo.getPath()));
         holder.photoName.setText(photo.getCaption());
+        holder.itemView.setBackgroundColor(selected_position == position ? context.getResources().getColor(R.color.colorPrimaryDark) : context.getResources().getColor(R.color.colorPrimary));
+
     }
 
     @Override
@@ -68,7 +73,10 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
             // itemView.setOnClickListener(new View.OnClickListener(){
             itemView.setOnClickListener(view -> {
                 if(listener != null){
-                    int position = getAdapterPosition();
+                    notifyItemChanged(position);
+                    position = getAdapterPosition();
+                    selected_position = position;
+                    notifyItemChanged(selected_position);
                     if(position != RecyclerView.NO_POSITION){
                         listener.onItemClick(position);
                     }
