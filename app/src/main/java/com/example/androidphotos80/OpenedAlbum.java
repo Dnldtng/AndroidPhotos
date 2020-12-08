@@ -32,6 +32,7 @@ public class OpenedAlbum extends AppCompatActivity {
     private int albumIndex;
     private List<Photo> photoList = new ArrayList<>();
     private RecyclerViewAdapterPhotos adapter;
+    private Photo selectedPhoto;
 
     public void addButton(View view){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
@@ -76,6 +77,16 @@ public class OpenedAlbum extends AppCompatActivity {
         adapter = new RecyclerViewAdapterPhotos(this, photoList);
         recyclerView.setAdapter(adapter);
 
+        adapter.setOnItemClickListener(new RecyclerViewAdapterPhotos.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                selectedPhoto = photoList.get(position);
+                System.out.println("selected");
+
+
+                //TODO highlight the selected item
+            }
+        });
         //TODO add a recyclerView for the photos, be able to first load/save the photos, then make it so we can click the cells, also need to make the buttons open up dialogs.
 
     }
