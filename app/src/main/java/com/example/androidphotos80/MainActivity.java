@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
@@ -153,6 +154,30 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                 alert.show();
             }
         });
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        try {
+            albumList = DataRW.readData(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        try {
+            albumList = DataRW.readData(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

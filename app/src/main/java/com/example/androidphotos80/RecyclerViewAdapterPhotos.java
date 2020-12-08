@@ -33,7 +33,6 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
         path = context.getFilesDir() + "/albums.dat";
     }
 
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,7 +49,6 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
         holder.thumbnail.setImageURI(Uri.parse(photo.getPath()));
         holder.photoName.setText(photo.getCaption());
         holder.itemView.setBackgroundColor(selected_position == position ? context.getResources().getColor(R.color.colorPrimaryDark) : context.getResources().getColor(R.color.colorPrimary));
-
     }
 
     @Override
@@ -62,7 +60,6 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
 
         ImageView thumbnail;
         TextView photoName;
-
 
         public ViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
@@ -83,7 +80,6 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
                 }
             });
         }
-
     }
 
     public interface OnItemClickListener{

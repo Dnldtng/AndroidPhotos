@@ -21,6 +21,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -42,7 +43,6 @@ public class OpenedAlbum extends AppCompatActivity {
     private int selectedPhotoIndex;
     private String path;
 
-
     public void addButton(View view){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -53,6 +53,7 @@ public class OpenedAlbum extends AppCompatActivity {
     public void deleteButton(View view){
         photoList.remove(selectedPhotoIndex);
         adapter.notifyItemRemoved(selectedPhotoIndex);
+        DataRW.writeData(albumList, path);
         System.out.println("removed");
         //adapter.notifyDataSetChanged();
     }
