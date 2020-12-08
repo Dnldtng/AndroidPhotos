@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.provider.ContactsContract;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidphotos80.model.Album;
+import com.example.androidphotos80.model.DataRW;
 
 import java.io.File;
 import java.lang.reflect.Array;
@@ -28,15 +30,17 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
-    private List<Album> albumList;
+    private ArrayList<Album> albumList;
     private OnNoteListener mOnNoteListener;
     private Context context;
     private String renameAlbumText;
+    private String path;
 
-    public RecyclerViewAdapter(List<Album> albumList, OnNoteListener onNoteListener, Context context) {
+    public RecyclerViewAdapter(ArrayList<Album> albumList, OnNoteListener onNoteListener, Context context) {
         this.albumList = albumList;
         this.mOnNoteListener = onNoteListener;
         this.context = context;
+        path = context.getFilesDir() + "/albums.dat";
     }
 
     @NonNull
@@ -67,6 +71,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 renameAlbumText = input.getText().toString();
                 Album albumToRename = albumList.get(position);
                 albumToRename.renameAlbum(renameAlbumText);
+                // Save data
+                DataRW.writeData(albumList, path);
                 notifyDataSetChanged();
             }
         });
@@ -86,6 +92,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onClick(View v) {
                 Album albumToDelete = albumList.get(position);
                 albumList.remove(albumToDelete);
+                // Save data
+                DataRW.writeData(albumList, path);
                 notifyItemRemoved(position);
                 notifyDataSetChanged();
             }

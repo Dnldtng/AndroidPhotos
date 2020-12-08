@@ -22,10 +22,12 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
     private Context context;
     private List<Photo> photoList;
     private OnItemClickListener mListener;
+    private String path;
 
     public RecyclerViewAdapterPhotos( Context context, List<Photo> photoList) {
         this.context = context;
         this.photoList = photoList;
+        path = context.getFilesDir() + "/albums.dat";
     }
 
 
