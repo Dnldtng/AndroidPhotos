@@ -1,4 +1,3 @@
-
 package com.example.androidphotos80;
 
 import android.content.Context;
@@ -29,12 +28,6 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
         this.photoList = photoList;
     }
 
-    public interface OnItemClickListener{
-        void onItemClick(int position);
-    }
-    public void setOnItemClickListener(OnItemClickListener listener){
-        mListener = listener;
-    }
 
     @NonNull
     @Override
@@ -47,7 +40,7 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // Load image into imageview
+        // Load image into imageView
         Photo photo = photoList.get(position);
         holder.thumbnail.setImageURI(Uri.parse(photo.getPath()));
         holder.photoName.setText(photo.getCaption());
@@ -63,28 +56,30 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
         ImageView thumbnail;
         TextView photoName;
 
-        public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
+
+        public ViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             thumbnail = itemView.findViewById(R.id.photoThumbnail);
             photoName = itemView.findViewById(R.id.photoName);
-
             itemView.setOnClickListener(new View.OnClickListener(){
-
                 @Override
                 public void onClick(View view) {
                     if(listener != null){
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION){
                             listener.onItemClick(position);
-git status
                         }
                     }
                 }
             });
-
-            // All of our buttons connecting to the stuff
-
         }
 
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
     }
 }

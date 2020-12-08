@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.ToDoubleBiFunction;
@@ -29,11 +30,9 @@ public class OpenedAlbum extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerViewAdapterPhotos adapter;
     private Album selectedAlbum;
-    private List<Photo> photoList = new ArrayList<>();
     private int albumIndex;
+    private List<Photo> photoList = new ArrayList<>();
     private Photo selectedPhoto;
-
-
 
     public void addButton(View view){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
@@ -51,12 +50,16 @@ public class OpenedAlbum extends AppCompatActivity {
             Uri photoUri = data.getData();
             System.out.println("This is the print: " + photoUri);
             Photo photoToAdd = new Photo(photoUri.toString());
+            File photoFile = new File(photoUri.getPath());
+            System.out.println("File PATH: " + photoFile.getAbsolutePath());
+            photoToAdd.setCaption(photoFile.getName());
             photoList.add(photoToAdd);
             adapter.notifyDataSetChanged();
+        }else{
+            // Error dialog?
         }
 
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
