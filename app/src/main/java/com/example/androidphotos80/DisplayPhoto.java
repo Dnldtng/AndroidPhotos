@@ -91,6 +91,7 @@ public class DisplayPhoto extends AppCompatActivity {
 
         builder.setSingleChoiceItems(tagTypes,0, (DialogInterface dialogInterface, int i) -> {
             typeSelected = tagTypes[i];
+            System.out.println(""+typeSelected);
         });
                 
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {

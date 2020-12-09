@@ -35,9 +35,9 @@ public class RecyclerViewAdapterDisplay extends RecyclerView.Adapter<RecyclerVie
     }
     public void updateList(ArrayList<Album> updatedList) throws IOException, ClassNotFoundException {
         albumList = updatedList;
-
         notifyDataSetChanged();
     }
+    
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
