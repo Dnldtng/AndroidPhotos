@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.io.File;
@@ -191,7 +192,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Search logic -> go through album list, find photos with tags that match and get into photolist. Then display in new activity.
+                        RadioGroup rg = view.findViewById(R.id.radioGroup);
+                        int radioID = rg.getCheckedRadioButtonId();
 
+                        if(radioID == R.id.locationButton){
+                            // Location checked
+                        }else if(radioID == R.id.personButton){
+                            // Person checked
+                        }else{
+                            // Nothing?
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -200,7 +210,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                         // Empty cancel
                     }
                 });
-
 
         final View searchLayout = getLayoutInflater().inflate(R.layout.search_dialog, null);
         builder.setView(searchLayout);
