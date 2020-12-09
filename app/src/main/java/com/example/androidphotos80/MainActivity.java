@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -133,7 +134,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 newAlbumText = input.getText().toString();
-                // New album text now has needed string, just need to add logic /  update the adapter and say there was a new thing added i think?
+                // Check if album with name already exists
+                for(Album a : albumList){
+                    if(a.getName().equalsIgnoreCase(newAlbumText)){
+                        Toast.makeText(getApplicationContext(), "Error: Album name already exists" , Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
                 Album newAlbum = new Album(newAlbumText);
                 albumList.add(newAlbum);
                 // Save data
