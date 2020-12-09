@@ -79,6 +79,25 @@ public class OpenedAlbum extends AppCompatActivity {
             File photoFile = new File(photoUri.getPath());
             System.out.println("File PATH: " + photoFile.getAbsolutePath());
             photoToAdd.setCaption(photoFile.getName());
+
+            // Check if photo already exists in any album
+            for(Album a : albumList){
+                for(Photo p : a.getPhotosList()){
+                    if(photoToAdd.equals(p)){
+                        // Duplicate found, check if in current album or other
+                        if(selectedAlbum.equals(a)){
+                            // Photo is already in current album, error dialog
+                            // TODO Error dialog
+                        }else{
+                            // Photo is in other album, get the reference to that photo object instead to get tags
+                            photoToAdd = p;
+                        }
+                    }
+                }
+            }
+
+
+
             photoList.add(photoToAdd);
             System.out.println(photoList.toString());
             System.out.println(selectedAlbum.getPhotosList().toString());

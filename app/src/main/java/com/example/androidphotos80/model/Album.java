@@ -1,9 +1,12 @@
 package com.example.androidphotos80.model;
 
 
+import androidx.annotation.Nullable;
+
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Album implements Serializable {
     private static final long serialVersionUID = 4106797422494775891L;
@@ -142,5 +145,13 @@ public class Album implements Serializable {
      */
     public String toString() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Album album = (Album) o;
+        return name.equals(album.name);
     }
 }
