@@ -24,9 +24,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.ContactsContract;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //getSupportActionBar().setTitle("Photos");
 
         // This is where we will load in data
         // Temp file to check if data exists
@@ -180,6 +183,32 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         });
     }
 
+    public void searchButton(View view) {
+        System.out.println("SEARCH BUTTON");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Search by tag")
+                .setCancelable(true)
+                .setPositiveButton("Search", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Search logic -> go through album list, find photos with tags that match and get into photolist. Then display in new activity.
+
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Empty cancel
+                    }
+                });
+
+
+        final View searchLayout = getLayoutInflater().inflate(R.layout.search_dialog, null);
+        builder.setView(searchLayout);
+
+        AlertDialog searchAlert = builder.create();
+        searchAlert.show();
+    }
 
     @Override
     public void onRestart(){
@@ -210,9 +239,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     }
 
 
-
-
-
     @Override
     public void onNoteClick(int position) {
         //gives reference to item selected
@@ -226,4 +252,5 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
 
     }
+
 }

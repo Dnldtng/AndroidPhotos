@@ -1,6 +1,7 @@
 package com.example.androidphotos80.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Tag implements Serializable {
     private static final long serialVersionUID = 4420084517420071942L;
@@ -56,6 +57,5 @@ public class Tag implements Serializable {
         //TODO add conditional string builder thingamajigger
         return name + ":" + value;
     }
-
 
 }
