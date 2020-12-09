@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         //TESTS
         System.out.println(albumList.toString());
 
-
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new RecyclerViewAdapter(albumList,  this, this);

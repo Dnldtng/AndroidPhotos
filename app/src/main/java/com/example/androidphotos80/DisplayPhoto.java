@@ -46,9 +46,6 @@ public class DisplayPhoto extends AppCompatActivity {
     private String typeSelected = "person";
     private String path;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +80,7 @@ public class DisplayPhoto extends AppCompatActivity {
     }
     public void addTagButton(View view){
 
-        final String[] tagTypes = {"person", "location"};
+        final String[] tagTypes = {"location", "person"};
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose Tag type");
@@ -100,7 +97,7 @@ public class DisplayPhoto extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Tag newTag = new Tag(typeSelected,input.getText().toString());
+                Tag newTag = new Tag(typeSelected, input.getText().toString());
                 // Check if album with name already exists
                 for(Tag t : tagList){
 
@@ -134,6 +131,10 @@ public class DisplayPhoto extends AppCompatActivity {
                 dialog.cancel();
             }
         });
+
+        AlertDialog addDialog = builder.create();
+        addDialog.show();
+
 
 /*
         Tag test1 = new Tag(2, "donald");
