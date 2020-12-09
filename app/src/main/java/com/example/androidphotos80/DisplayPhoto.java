@@ -44,7 +44,6 @@ public class DisplayPhoto extends AppCompatActivity {
         previousButton = findViewById(R.id.previousButton);
         nextButton = findViewById(R.id.nextButton);
 
-
         Intent intent = getIntent();
         photoList = (ArrayList<Photo>) intent.getSerializableExtra("photoList");
         currentAlbum = (Album) intent.getSerializableExtra("currentAlbum");

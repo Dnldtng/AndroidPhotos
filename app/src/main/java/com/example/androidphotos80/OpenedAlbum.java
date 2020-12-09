@@ -71,7 +71,6 @@ public class OpenedAlbum extends AppCompatActivity {
 
         moveDialog.setArguments(args);
         moveDialog.show(getSupportFragmentManager(), "Test");
-
     }
 
     public void moveUpdate(int photoIndex, Album albumRemove){
@@ -167,14 +166,12 @@ public class OpenedAlbum extends AppCompatActivity {
     }
     */
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opened_album);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         path = this.getApplicationContext().getFilesDir() + "/albums.dat";
 
@@ -195,7 +192,7 @@ public class OpenedAlbum extends AppCompatActivity {
         //this was causing null pointer because no adapter attached
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         selectedAlbum = albumList.get(albumIndex);
-        getSupportActionBar().setTitle(selectedAlbum.getName());
+        //getSupportActionBar().setTitle(selectedAlbum.getName());
         System.out.println("INSIDE ALBUM :" + selectedAlbum);
         photoList = selectedAlbum.getPhotosList();
         System.out.println(photoList.toString());
