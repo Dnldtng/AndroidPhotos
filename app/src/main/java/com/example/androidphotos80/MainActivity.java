@@ -193,11 +193,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Search logic -> go through album list, find photos with tags that match and get into photolist. Then display in new activity.
-                        RadioGroup rg = (RadioGroup) searchLayout.findViewById(R.id.radioGroup);
+                        RadioGroup rg = searchLayout.findViewById(R.id.radioGroup);
+                        EditText searchText = searchLayout.findViewById(R.id.searchText);
+                        String inputText = searchText.getText().toString();
                         int radioID = rg.getCheckedRadioButtonId();
                         if(radioID == R.id.locationButton){
                             // Location checked
                             System.out.println("Location");
+                            // Check all location tags for search
+
+
                         }else if(radioID == R.id.personButton){
                             // Person checked
                             System.out.println("Person");
