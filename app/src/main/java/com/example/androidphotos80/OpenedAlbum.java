@@ -52,6 +52,7 @@ public class OpenedAlbum extends AppCompatActivity {
         Intent intent = new Intent (this, DisplayPhoto.class);
         intent.putExtra("photoList", (Serializable) photoList);
         intent.putExtra("selectedPhotoIndex", selectedPhotoIndex);
+        intent.putExtra("currentAlbum", selectedAlbum);
         startActivity(intent);
     }
 
