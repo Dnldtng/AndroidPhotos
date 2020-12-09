@@ -135,6 +135,10 @@ public class DisplayPhoto extends AppCompatActivity {
             }
         });
 
+        AlertDialog addDialog = builder.create();
+        addDialog.show();
+
+
 /*
         Tag test1 = new Tag(2, "donald");
         Tag test2 = new Tag(1, "edison");
