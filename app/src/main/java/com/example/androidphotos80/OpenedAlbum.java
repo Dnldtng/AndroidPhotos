@@ -175,11 +175,11 @@ public class OpenedAlbum extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         path = this.getApplicationContext().getFilesDir() + "/albums.dat";
 
         Intent intent = getIntent();
         //albumList = (ArrayList<Album>) intent.getSerializableExtra("albums");
-
 
         try {
             albumList = DataRW.readData(path);
@@ -195,6 +195,7 @@ public class OpenedAlbum extends AppCompatActivity {
         //this was causing null pointer because no adapter attached
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         selectedAlbum = albumList.get(albumIndex);
+        getSupportActionBar().setTitle(selectedAlbum.getName());
         System.out.println("INSIDE ALBUM :" + selectedAlbum);
         photoList = selectedAlbum.getPhotosList();
         System.out.println(photoList.toString());
