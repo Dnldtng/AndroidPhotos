@@ -92,7 +92,7 @@ public class DisplayPhoto extends AppCompatActivity {
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
-        builder.setSingleChoiceItems(tagTypes,0, (dialogInterface, i) -> {
+        builder.setSingleChoiceItems(tagTypes,0, (DialogInterface dialogInterface, int i) -> {
             typeSelected = tagTypes[i];
         });
                 
