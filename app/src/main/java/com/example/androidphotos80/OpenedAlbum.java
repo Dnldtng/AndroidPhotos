@@ -12,6 +12,7 @@ import com.example.androidphotos80.model.Photo;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 public class OpenedAlbum extends AppCompatActivity {
     private ArrayList<Album> albumList;
     private RecyclerView recyclerView;
-    private RecyclerViewAdapterPhotos adapter;
+    public RecyclerViewAdapterPhotos adapter;
     private Album selectedAlbum;
     private int albumIndex;
     private ArrayList<Photo> photoList;
@@ -65,28 +66,14 @@ public class OpenedAlbum extends AppCompatActivity {
         args.putSerializable("photo", selectedPhoto);
         args.putInt("albumIndex", albumIndex);
 
-
-        /*
-        Intent intent = new Intent(this, moveDialog.getClass());
-        intent.putExtra("photo", selectedPhoto);
-        intent.putExtra("albumIndex", albumIndex);
-        */
-
-
         moveDialog.setArguments(args);
-
         moveDialog.show(getSupportFragmentManager(), "Test");
-        //moveDialog.startActivityForResult(intent, 30);
-
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
-
 
         // Got our image, need to add it to photoList
         if(requestCode == 20 && resultCode == Activity.RESULT_OK){
@@ -145,6 +132,7 @@ public class OpenedAlbum extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         try {
             albumList = DataRW.readData(path);
         } catch (IOException e) {
@@ -152,11 +140,14 @@ public class OpenedAlbum extends AppCompatActivity {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        // Need this or view doesnt update on adding a new album
-        adapter.notifyDataSetChanged();
-    }
 
-     */
+
+        // Need this or view doesnt update on adding a new album
+        //adapter.notifyDataSetChanged();
+    }
+    */
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

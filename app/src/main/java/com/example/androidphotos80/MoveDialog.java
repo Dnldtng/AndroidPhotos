@@ -86,6 +86,8 @@ public class MoveDialog extends AppCompatDialogFragment {
                         currentAlbum.getPhotosList().remove(selectedPhoto);
                         DataRW.writeData(albumList, path);
 
+
+
                     }
                 });
 
