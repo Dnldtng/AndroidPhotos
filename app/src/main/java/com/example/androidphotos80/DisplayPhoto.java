@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -83,76 +84,66 @@ public class DisplayPhoto extends AppCompatActivity {
         });
     }
     public void addTagButton(View view){
-
+        System.out.println("ADD BUTTON");
         final String[] tagTypes = {"location", "person"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final View searchLayout = getLayoutInflater().inflate(R.layout.search_dialog, null);
+        builder.setView(searchLayout);
+        builder.setTitle("Search by tag")
+                .setCancelable(true)
+                .setPositiveButton("Search", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Search logic -> go through album list, find photos with tags that match and get into photolist. Then display in new activity.
+                        RadioGroup rg = searchLayout.findViewById(R.id.radioGroup);
+                        EditText searchText = searchLayout.findViewById(R.id.searchText);
+                        String inputText = searchText.getText().toString();
+                        int radioID = rg.getCheckedRadioButtonId();
+                        if(radioID == R.id.locationButton){
+                                // Location checked
+                            System.out.println("Location");
+                            Tag tempTag = new Tag("location", inputText);
+                            // Check if album with name already exists
+                            for(Tag t : tagList) {
+                                if (t.equals(tempTag)) {
+                                    Toast.makeText(getApplicationContext(), "Error: Tag already exists", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            }
+                            tagList.add(tempTag);
+                            // Save data
+                            DataRW.writeData(albumList, path);
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose Tag type");
-        builder.setCancelable(true);
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
+                        }else if(radioID == R.id.personButton){
+                                // Person checked
+                            System.out.println("Person");
+                            Tag tempTag = new Tag("person", inputText);
+                            // Check if album with name already exists
+                            for(Tag t : tagList) {
+                                if (t.equals(tempTag)) {
+                                    Toast.makeText(getApplicationContext(), "Error: Tag already exists", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            }
+                            tagList.add(tempTag);
+                            // Save data
+                            DataRW.writeData(albumList, path);
 
-        builder.setSingleChoiceItems(tagTypes,0, (DialogInterface dialogInterface, int i) -> {
-            typeSelected = tagTypes[i];
-            System.out.println(""+typeSelected);
-        });
-
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                Tag newTag = new Tag(typeSelected, input.getText().toString());
-                // Check if album with name already exists
-                for(Tag t : tagList){
-
-                    if(t.getValue().equalsIgnoreCase(newTag.getValue()) && t.getName().equalsIgnoreCase(newTag.getName())){
-                        Toast.makeText(getApplicationContext(), "Error: Tag already exists" , Toast.LENGTH_SHORT).show();
-                        return;
+                        }else{
+                                // Nothing?
+                        }
                     }
-                }
-
-                tagList.add(newTag);
-                // Save data
-                DataRW.writeData(albumList, path);
-
-                try {
-                    adapter.updateList(albumList);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-                // adapter.notifyItemInserted(albumList.size() - 1);
-                //adapter.notifyDataSetChanged();
-
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        AlertDialog addDialog = builder.create();
-        addDialog.show();
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                            // Empty cancel
+                    }
+                });
 
 
-
-/*
-        Tag test1 = new Tag(2, "donald");
-        Tag test2 = new Tag(1, "edison");
-        tagList.add(test1);
-        tagList.add(test2);
-        adapter.notifyItemInserted(0);
-        adapter.notifyItemInserted(1);
-        System.out.println("added");
-       // selectedPhoto.addTag();
-
- */
+        AlertDialog searchAlert = builder.create();
+        searchAlert.show();
     }
 
     public void deleteTagButton(View view){
@@ -161,6 +152,7 @@ public class DisplayPhoto extends AppCompatActivity {
         //DataRW.writeData(albumList, path);
         System.out.println("removed");
         adapter.notifyDataSetChanged();
+
     }
 
     public void previousButton(View view){
@@ -171,6 +163,11 @@ public class DisplayPhoto extends AppCompatActivity {
         }
         selectedPhoto = photoList.get(selectedPhotoIndex);
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
+        tagList.clear();
+        ArrayList<Tag> newTags = selectedPhoto.getTags();
+        tagList = newTags;
+        adapter.notifyDataSetChanged();
+
     }
 
     public void nextButton(View view){
@@ -181,6 +178,11 @@ public class DisplayPhoto extends AppCompatActivity {
         }
         selectedPhoto = photoList.get(selectedPhotoIndex);
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
+
+        tagList.clear();
+        ArrayList<Tag> newTags = selectedPhoto.getTags();
+        tagList = newTags;
+        adapter.notifyDataSetChanged();
     }
 
 
