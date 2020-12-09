@@ -12,10 +12,13 @@ import com.example.androidphotos80.model.Photo;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
+import android.view.contentcapture.DataShareWriteAdapter;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,13 +61,35 @@ public class OpenedAlbum extends AppCompatActivity {
 
     public void moveButton(View view){
         MoveDialog moveDialog = new MoveDialog();
+
         // Send selected photo and currentAlbum in bundle
         Bundle args = new Bundle();
         args.putSerializable("photo", selectedPhoto);
+        args.putSerializable("originAlbum", selectedAlbum);
         args.putInt("albumIndex", albumIndex);
-        moveDialog.setArguments(args);
+        args.putInt("selectedPhotoIndex", selectedPhotoIndex);
 
+        moveDialog.setArguments(args);
         moveDialog.show(getSupportFragmentManager(), "Test");
+
+    }
+
+    public void moveUpdate(int photoIndex, Album albumRemove){
+        //destAlbum.addPhoto(addPhoto);
+
+        // Try removing photo here instead??
+
+        /*
+        Album albumRemove = albumList.get(albumIndex);
+        albumRemove.getPhotosList().remove(photoIndex);
+        DataRW.writeData(albumList, path);
+        */
+
+        //adapter.notifyItemRemoved(photoIndex);
+        adapter.notifyItemRangeChanged(photoIndex, photoList.size());
+        //adapter.notifyDataSetChanged();
+
+
     }
 
     @Override
@@ -87,7 +112,8 @@ public class OpenedAlbum extends AppCompatActivity {
                         // Duplicate found, check if in current album or other
                         if(selectedAlbum.equals(a)){
                             // Photo is already in current album, error dialog
-                            // TODO Error dialog
+                            Toast.makeText(this, "Error: Photo already in album" , Toast.LENGTH_SHORT).show();
+                            return;
                         }else{
                             // Photo is in other album, get the reference to that photo object instead to get tags
                             photoToAdd = p;
@@ -95,8 +121,6 @@ public class OpenedAlbum extends AppCompatActivity {
                     }
                 }
             }
-
-
 
             photoList.add(photoToAdd);
             System.out.println(photoList.toString());
@@ -128,6 +152,7 @@ public class OpenedAlbum extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         try {
             albumList = DataRW.readData(path);
         } catch (IOException e) {
@@ -135,11 +160,13 @@ public class OpenedAlbum extends AppCompatActivity {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        // Need this or view doesnt update on adding a new album
-        adapter.notifyDataSetChanged();
-    }
 
-     */
+
+        // Need this or view doesnt update on adding a new album
+        //adapter.notifyDataSetChanged();
+    }
+    */
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,9 +178,9 @@ public class OpenedAlbum extends AppCompatActivity {
         path = this.getApplicationContext().getFilesDir() + "/albums.dat";
 
         Intent intent = getIntent();
-        albumList = (ArrayList<Album>) intent.getSerializableExtra("albums");
+        //albumList = (ArrayList<Album>) intent.getSerializableExtra("albums");
 
-        /*
+
         try {
             albumList = DataRW.readData(path);
         } catch (IOException e) {
@@ -161,7 +188,6 @@ public class OpenedAlbum extends AppCompatActivity {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        */
 
         albumIndex = intent.getIntExtra("albumPosition", 0);
         recyclerView = findViewById(R.id.recyclerView2);
@@ -169,7 +195,7 @@ public class OpenedAlbum extends AppCompatActivity {
         //this was causing null pointer because no adapter attached
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         selectedAlbum = albumList.get(albumIndex);
-        System.out.println(selectedAlbum);
+        System.out.println("INSIDE ALBUM :" + selectedAlbum);
         photoList = selectedAlbum.getPhotosList();
         System.out.println(photoList.toString());
 

@@ -33,7 +33,7 @@ public class MoveDialog extends AppCompatDialogFragment {
     public ArrayList<Album> albumList;
     public Album currentAlbum, destinationAlbum;
     private String path;
-    private int currentAlbumIndex;
+    private int currentAlbumIndex, selectedPhotoIndex;
     private Photo selectedPhoto;
 
     @NonNull
@@ -44,8 +44,18 @@ public class MoveDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.move_dialog, null);
 
         currentAlbumIndex = getArguments().getInt("albumIndex");
+        //currentAlbum = (Album) getArguments().getSerializable("originAlbum");
+        //currentAlbum = albumList.get(currentAlbumIndex);
         selectedPhoto = (Photo) getArguments().getSerializable("photo");
+        // selectedPhoto can be null if it is the user does not select anything and tries to move
+        // the first photo without clicking it. Null check here and default to first in list
+        if(selectedPhoto == null){
+            selectedPhoto = currentAlbum.getPhotosList().get(0);
+        }
+
+        selectedPhotoIndex = getArguments().getInt("selectedPhotoIndex");
         path = this.getContext().getFilesDir() + "/albums.dat";
+
 
         try {
             albumList = DataRW.readData(path);
@@ -55,7 +65,11 @@ public class MoveDialog extends AppCompatDialogFragment {
             e.printStackTrace();
         }
 
+        currentAlbum = albumList.get(currentAlbumIndex);
+
+
         ArrayList<Album> destinationList = new ArrayList<Album>(albumList);
+
         // Get rid of current album for destination list
         destinationList.remove(currentAlbumIndex);
 
@@ -76,17 +90,25 @@ public class MoveDialog extends AppCompatDialogFragment {
                 .setPositiveButton("Move", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        /*
+
                         destinationAlbum = (Album) albumSpinner.getSelectedItem();
                         // Add photo
                         destinationAlbum.addPhoto(selectedPhoto);
+                        //DataRW.writeData(albumList, path);
 
                         // Remove photo
-                        currentAlbum = albumList.get(currentAlbumIndex);
-                        currentAlbum.getPhotosList().remove(selectedPhoto);
+                        currentAlbum.getPhotosList().remove(selectedPhotoIndex);
+
                         DataRW.writeData(albumList, path);
 
-                         */
+                        // Calls moveUpdate method in openedAlbum to notify
+                        System.out.println("Current Album: " + currentAlbum + ", albumIndex: " + currentAlbumIndex +  ", selectedPhotoIndex: " + selectedPhotoIndex +
+                                ", selectedPhoto: " + selectedPhoto + ", destinationAlbum: " + destinationAlbum );
+
+                        //((OpenedAlbum)getActivity()).moveUpdate(currentAlbumIndex, selectedPhotoIndex, selectedPhoto, destinationAlbum);
+                        System.out.println(selectedPhotoIndex + " " + currentAlbum);
+
+                        ((OpenedAlbum)getActivity()).moveUpdate(selectedPhotoIndex, currentAlbum);
                     }
                 });
 

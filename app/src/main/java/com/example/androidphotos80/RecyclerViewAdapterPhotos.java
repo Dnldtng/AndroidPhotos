@@ -13,8 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidphotos80.model.Album;
+import com.example.androidphotos80.model.DataRW;
 import com.example.androidphotos80.model.Photo;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
