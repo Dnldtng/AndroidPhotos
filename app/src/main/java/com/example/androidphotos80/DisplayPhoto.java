@@ -33,7 +33,7 @@ public class DisplayPhoto extends AppCompatActivity {
 
     private ArrayList<Album> albumList;
     private TextView mTextView;
-    private List<Photo> photoList = new ArrayList<>();
+    private List<Photo> photoList;
     private int selectedPhotoIndex;
     private ImageView imageView;
     private Button previousButton, nextButton;
@@ -58,22 +58,35 @@ public class DisplayPhoto extends AppCompatActivity {
         path = this.getApplicationContext().getFilesDir() + "/albums.dat";
 
         Intent intent = getIntent();
-        albumList = (ArrayList<Album>) intent.getSerializableExtra("albumList");
+        //albumList = (ArrayList<Album>) intent.getSerializableExtra("albumList");
+
+        try {
+            albumList = DataRW.readData(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
         photoList = (ArrayList<Photo>) intent.getSerializableExtra("photoList");
-        currentAlbum = (Album) intent.getSerializableExtra("currentAlbum");
+        //currentAlbum = (Album) intent.getSerializableExtra("currentAlbum");
         selectedPhotoIndex = intent.getIntExtra("selectedPhotoIndex", 0);
         selectedPhoto = photoList.get(selectedPhotoIndex);
+        System.out.println("Selected Photo: " + selectedPhoto);
+        System.out.println(albumList);
         imageView = (ImageView)findViewById(R.id.imageView);
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
 
-        //TEST PRINT
-        System.out.println(selectedPhoto.getTags().toString());
 
         recyclerView = findViewById(R.id.recyclerView3);
         tagList = selectedPhoto.getTags();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RecyclerViewAdapterDisplay(this, tagList,albumList);
+        adapter = new RecyclerViewAdapterDisplay(this, tagList, albumList);
         recyclerView.setAdapter(adapter);
+
+        //TEST
+        System.out.println("TagList: " + selectedPhoto.getTags().toString());
+        System.out.println("AlbumList: " + albumList + " photoList: " + photoList + " currentAlbum: " + currentAlbum + " PhotoIndex: " + selectedPhotoIndex + " SelectedPhoto: " + selectedPhoto + " selectedTagList " + selectedPhoto.getTags().toString());
 
         adapter.setOnTagItemClickListener(position -> {
             selectedTagIndex = position;
@@ -81,15 +94,15 @@ public class DisplayPhoto extends AppCompatActivity {
             System.out.println("selected: " + selectedTag);
         });
     }
+
     public void addTagButton(View view){
         System.out.println("ADD BUTTON");
-        final String[] tagTypes = {"location", "person"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final View searchLayout = getLayoutInflater().inflate(R.layout.search_dialog, null);
         builder.setView(searchLayout);
         builder.setTitle("Search by tag")
                 .setCancelable(true)
-                .setPositiveButton("Search", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Search logic -> go through album list, find photos with tags that match and get into photolist. Then display in new activity.
@@ -98,7 +111,7 @@ public class DisplayPhoto extends AppCompatActivity {
                         String inputText = searchText.getText().toString();
                         int radioID = rg.getCheckedRadioButtonId();
                         if(radioID == R.id.locationButton){
-                                // Location checked
+                            // Location checked
                             System.out.println("Location");
                             Tag tempTag = new Tag("location", inputText);
                             // Check if album with name already exists
@@ -108,12 +121,15 @@ public class DisplayPhoto extends AppCompatActivity {
                                     return;
                                 }
                             }
-                            tagList.add(tempTag);
+                            //tagList.add(tempTag);
+                            //selectedPhoto.addTag(tempTag);
+                            selectedPhoto.getTags().add(tempTag);
+                            System.out.println("Added tag " + tempTag + " To Photo: " + selectedPhoto);
                             // Save data
                             DataRW.writeData(albumList, path);
 
                         }else if(radioID == R.id.personButton){
-                                // Person checked
+                            // Person checked
                             System.out.println("Person");
                             Tag tempTag = new Tag("person", inputText);
                             // Check if album with name already exists
@@ -123,10 +139,12 @@ public class DisplayPhoto extends AppCompatActivity {
                                     return;
                                 }
                             }
-                            tagList.add(tempTag);
+                            //tagList.add(tempTag);
+                            //selectedPhoto.addTag(tempTag);
+                            selectedPhoto.getTags().add(tempTag);
+                            System.out.println(selectedPhoto.getTags().toString());
                             // Save data
                             DataRW.writeData(albumList, path);
-
                         }else{
                                 // Nothing?
                         }
@@ -161,9 +179,10 @@ public class DisplayPhoto extends AppCompatActivity {
         }
         selectedPhoto = photoList.get(selectedPhotoIndex);
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
-        tagList.clear();
+
+        //tagList.clear();
         ArrayList<Tag> newTags = selectedPhoto.getTags();
-        tagList = newTags;
+        //tagList = newTags;
         adapter.notifyDataSetChanged();
 
     }
@@ -177,9 +196,9 @@ public class DisplayPhoto extends AppCompatActivity {
         selectedPhoto = photoList.get(selectedPhotoIndex);
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
 
-        tagList.clear();
+       // tagList.clear();
         ArrayList<Tag> newTags = selectedPhoto.getTags();
-        tagList = newTags;
+        //tagList = newTags;
         adapter.notifyDataSetChanged();
     }
 

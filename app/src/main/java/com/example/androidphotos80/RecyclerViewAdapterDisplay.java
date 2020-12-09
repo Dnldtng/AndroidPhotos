@@ -20,11 +20,11 @@ import java.util.List;
 public class RecyclerViewAdapterDisplay extends RecyclerView.Adapter<RecyclerViewAdapterDisplay.ViewHolder>{
 
     private Context context;
-    private ArrayList<Tag> tagList = new ArrayList<Tag>();
+    private ArrayList<Tag> tagList;
     private OnTagItemClickListener tListener;
     private int selected_position = 0;
     private int position;
-    private ArrayList<Album> albumList = new ArrayList<Album>();
+    private ArrayList<Album> albumList;
 
     public RecyclerViewAdapterDisplay(Context context, ArrayList<Tag> tagList,ArrayList<Album> albumList){
         this.context = context;
@@ -33,6 +33,7 @@ public class RecyclerViewAdapterDisplay extends RecyclerView.Adapter<RecyclerVie
         //will need to figure out tag passing
 
     }
+
     public void updateList(ArrayList<Album> updatedList) throws IOException, ClassNotFoundException {
         albumList = updatedList;
         notifyDataSetChanged();

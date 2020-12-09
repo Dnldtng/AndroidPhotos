@@ -14,7 +14,7 @@ public class Photo implements Serializable {
     /**
      * Tag list for photo
      */
-    private ArrayList<Tag> tags = new ArrayList<Tag>();
+    private ArrayList<Tag> tags;
 
     /**
      * Caption string
@@ -33,6 +33,7 @@ public class Photo implements Serializable {
      */
     public Photo(String p) {
         this.path = p;
+        tags = new ArrayList<Tag>();
     }
 
 
@@ -131,6 +132,11 @@ public class Photo implements Serializable {
                 }
             }
             return false;
+    }
+
+    @Override
+    public String toString(){
+        return getCaption();
     }
 
     @Override

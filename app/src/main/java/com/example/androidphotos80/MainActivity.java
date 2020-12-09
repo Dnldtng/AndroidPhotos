@@ -222,7 +222,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                             }
                         }else{
                             // TODO Add error toast dialog
-
                         }
                     }
                 })
