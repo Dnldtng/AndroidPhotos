@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 import android.view.contentcapture.DataShareWriteAdapter;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,12 +78,12 @@ public class OpenedAlbum extends AppCompatActivity {
         //destAlbum.addPhoto(addPhoto);
 
         // Try removing photo here instead??
+
         /*
         Album albumRemove = albumList.get(albumIndex);
         albumRemove.getPhotosList().remove(photoIndex);
         DataRW.writeData(albumList, path);
-
-         */
+        */
 
         //adapter.notifyItemRemoved(photoIndex);
         adapter.notifyItemRangeChanged(photoIndex, photoList.size());
@@ -111,7 +112,8 @@ public class OpenedAlbum extends AppCompatActivity {
                         // Duplicate found, check if in current album or other
                         if(selectedAlbum.equals(a)){
                             // Photo is already in current album, error dialog
-                            // TODO Error dialog
+                            Toast.makeText(this, "Error: Photo already in album" , Toast.LENGTH_SHORT).show();
+                            return;
                         }else{
                             // Photo is in other album, get the reference to that photo object instead to get tags
                             photoToAdd = p;
@@ -119,8 +121,6 @@ public class OpenedAlbum extends AppCompatActivity {
                     }
                 }
             }
-
-
 
             photoList.add(photoToAdd);
             System.out.println(photoList.toString());
@@ -166,7 +166,6 @@ public class OpenedAlbum extends AppCompatActivity {
         //adapter.notifyDataSetChanged();
     }
     */
-
 
 
     @Override
