@@ -57,6 +57,7 @@ public class DisplayPhoto extends AppCompatActivity {
         path = this.getApplicationContext().getFilesDir() + "/albums.dat";
 
 
+
         Intent intent = getIntent();
         albumList = (ArrayList<Album>) intent.getSerializableExtra("albumList");
         photoList = (ArrayList<Photo>) intent.getSerializableExtra("photoList");
@@ -65,6 +66,9 @@ public class DisplayPhoto extends AppCompatActivity {
         selectedPhoto = photoList.get(selectedPhotoIndex);
         imageView = (ImageView)findViewById(R.id.imageView);
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
+
+        //TEST PRINT
+        System.out.println(selectedPhoto.getTags().toString());
 
         recyclerView = findViewById(R.id.recyclerView3);
         tagList = selectedPhoto.getTags();
@@ -93,7 +97,7 @@ public class DisplayPhoto extends AppCompatActivity {
             typeSelected = tagTypes[i];
             System.out.println(""+typeSelected);
         });
-                
+
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -135,6 +139,7 @@ public class DisplayPhoto extends AppCompatActivity {
 
         AlertDialog addDialog = builder.create();
         addDialog.show();
+
 
 
 /*

@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.io.File;
@@ -69,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private String newAlbumText;
     private String path;
     RecyclerViewAdapter adapter;
-
 
     private void prepareTheList(){
         int count = 0;
@@ -185,13 +185,30 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     public void searchButton(View view) {
         System.out.println("SEARCH BUTTON");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final View searchLayout = getLayoutInflater().inflate(R.layout.search_dialog, null);
+        builder.setView(searchLayout);
         builder.setTitle("Search by tag")
                 .setCancelable(true)
                 .setPositiveButton("Search", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Search logic -> go through album list, find photos with tags that match and get into photolist. Then display in new activity.
+                        RadioGroup rg = searchLayout.findViewById(R.id.radioGroup);
+                        EditText searchText = searchLayout.findViewById(R.id.searchText);
+                        String inputText = searchText.getText().toString();
+                        int radioID = rg.getCheckedRadioButtonId();
+                        if(radioID == R.id.locationButton){
+                            // Location checked
+                            System.out.println("Location");
+                            // Check all location tags for search
 
+
+                        }else if(radioID == R.id.personButton){
+                            // Person checked
+                            System.out.println("Person");
+                        }else{
+                            // Nothing?
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -201,9 +218,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                     }
                 });
 
-
-        final View searchLayout = getLayoutInflater().inflate(R.layout.search_dialog, null);
-        builder.setView(searchLayout);
 
         AlertDialog searchAlert = builder.create();
         searchAlert.show();
