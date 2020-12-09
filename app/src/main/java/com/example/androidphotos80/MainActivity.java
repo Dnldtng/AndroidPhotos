@@ -138,8 +138,17 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                 albumList.add(newAlbum);
                 // Save data
                 DataRW.writeData(albumList, path);
-                //adapter.notifyItemInserted(albumList.size() - 1);
-                adapter.notifyDataSetChanged();
+
+                try {
+                    adapter.updateList(albumList);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                // adapter.notifyItemInserted(albumList.size() - 1);
+                //adapter.notifyDataSetChanged();
 
             }
         });
@@ -175,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             e.printStackTrace();
         }
         // Need this or view doesnt update on adding a new album
-        adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -189,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             e.printStackTrace();
         }
         // Need this or view doesnt update on adding a new album
-        adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
     }
 
 

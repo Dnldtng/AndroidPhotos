@@ -44,6 +44,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         path = context.getFilesDir() + "/albums.dat";
     }
 
+    public void updateList(ArrayList<Album> updatedList) throws IOException, ClassNotFoundException {
+        albumList = updatedList;
+
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
