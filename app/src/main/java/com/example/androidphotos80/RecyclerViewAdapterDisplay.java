@@ -41,6 +41,7 @@ public class RecyclerViewAdapterDisplay extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Tag tag = tagList.get(position);
         holder.textView.setText(tag.toString());
+        holder.itemView.setBackgroundColor(selected_position == position ? context.getResources().getColor(R.color.lightgray) : context.getResources().getColor(R.color.white));
     }
 
     @Override
@@ -72,6 +73,7 @@ public class RecyclerViewAdapterDisplay extends RecyclerView.Adapter<RecyclerVie
     public interface OnTagItemClickListener{
         void onItemClick(int position);
     }
+
     public void setOnTagItemClickListener(OnTagItemClickListener listener){
         tListener = listener;
     }
