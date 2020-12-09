@@ -45,14 +45,27 @@ public class RecyclerViewAdapterDisplay extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemCount() {
-        return 0;
+        return tagList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tag;
+        TextView textView;
 
         public ViewHolder(@NonNull View itemView, OnTagItemClickListener tListener) {
             super(itemView);
+            textView = itemView.findViewById(R.id.tagTextView);
+
+            itemView.setOnClickListener(view -> {
+                if(tListener != null){
+                    notifyItemChanged(position);
+                    position = getAdapterPosition();
+                    selected_position = position;
+                    notifyItemChanged(selected_position);
+                    if(position != RecyclerView.NO_POSITION){
+                        tListener.onItemClick(position);
+                    }
+                }
+            });
         }
     }
 

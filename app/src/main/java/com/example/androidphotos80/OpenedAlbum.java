@@ -210,11 +210,6 @@ public class OpenedAlbum extends AppCompatActivity {
             System.out.println("selected" + selectedPhoto);
         });
 
-
-
-
-    //TODO add a recyclerView for the photos, be able to first load/save the photos, then make it so we can click the cells, also need to make the buttons open up dialogs.
-
     }
 
 

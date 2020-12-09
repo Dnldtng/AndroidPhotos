@@ -53,6 +53,7 @@ public class Tag implements Serializable {
      * toString override for tag printing
      */
     public String toString() {
+        //TODO add conditional string builder thingamajigger
         return name + ":" + value;
     }
 

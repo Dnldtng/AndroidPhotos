@@ -62,7 +62,7 @@ public class DisplayPhoto extends AppCompatActivity {
         adapter.setOnTagItemClickListener(position -> {
             selectedTagIndex = position;
             selectedTag = tagList.get(position);
-            System.out.println("selected" + selectedTag);
+            System.out.println("selected: " + selectedTag);
         });
     }
     public void addTagButton(View view){
