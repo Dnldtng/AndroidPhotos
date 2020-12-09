@@ -57,8 +57,6 @@ public class DisplayPhoto extends AppCompatActivity {
 
         path = this.getApplicationContext().getFilesDir() + "/albums.dat";
 
-
-
         Intent intent = getIntent();
         albumList = (ArrayList<Album>) intent.getSerializableExtra("albumList");
         photoList = (ArrayList<Photo>) intent.getSerializableExtra("photoList");
