@@ -65,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private RecyclerView recyclerView;
     private String newAlbumText;
     private String path;
+    RecyclerViewAdapter adapter;
+
 
     private void prepareTheList(){
         int count = 0;
@@ -94,8 +96,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+            albumList = new ArrayList<Album>();
             DataRW.writeData(albumList, path);
+            System.out.println("WROTE OUT");
         }else{
             try {
                 albumList = (ArrayList<Album>) DataRW.readData(path);
@@ -107,10 +110,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             System.out.println("EXISTS!!, LOADED");
         }
 
+        //TESTS
+        System.out.println(albumList.toString());
+
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(albumList,  this, this);
+        adapter = new RecyclerViewAdapter(albumList,  this, this);
         recyclerView.setAdapter(adapter);
         FloatingActionButton fab = findViewById(R.id.fab);
 
@@ -134,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                 DataRW.writeData(albumList, path);
                 //adapter.notifyItemInserted(albumList.size() - 1);
                 adapter.notifyDataSetChanged();
+
             }
         });
 
@@ -156,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         });
     }
 
+
     @Override
     public void onRestart(){
         super.onRestart();
@@ -166,6 +174,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        // Need this or view doesnt update on adding a new album
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -178,7 +188,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        // Need this or view doesnt update on adding a new album
+        adapter.notifyDataSetChanged();
     }
+
+
+
+
 
     @Override
     public void onNoteClick(int position) {

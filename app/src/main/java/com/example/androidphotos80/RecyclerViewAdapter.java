@@ -24,6 +24,7 @@ import com.example.androidphotos80.model.Album;
 import com.example.androidphotos80.model.DataRW;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;

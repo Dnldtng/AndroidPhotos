@@ -1,8 +1,6 @@
 package com.example.androidphotos80;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,27 +8,19 @@ import android.os.Bundle;
 import com.example.androidphotos80.model.Album;
 import com.example.androidphotos80.model.DataRW;
 import com.example.androidphotos80.model.Photo;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.ContactsContract;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.function.ToDoubleBiFunction;
 
 public class OpenedAlbum extends AppCompatActivity {
     private ArrayList<Album> albumList;
@@ -55,7 +45,7 @@ public class OpenedAlbum extends AppCompatActivity {
         adapter.notifyItemRemoved(selectedPhotoIndex);
         DataRW.writeData(albumList, path);
         System.out.println("removed");
-        //adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     public void displayButton(View view){
@@ -66,7 +56,14 @@ public class OpenedAlbum extends AppCompatActivity {
     }
 
     public void moveButton(View view){
+        MoveDialog moveDialog = new MoveDialog();
+        // Send selected photo and currentAlbum in bundle
+        Bundle args = new Bundle();
+        args.putSerializable("photo", selectedPhoto);
+        args.putInt("albumIndex", albumIndex);
+        moveDialog.setArguments(args);
 
+        moveDialog.show(getSupportFragmentManager(), "Test");
     }
 
     @Override
@@ -82,6 +79,8 @@ public class OpenedAlbum extends AppCompatActivity {
             System.out.println("File PATH: " + photoFile.getAbsolutePath());
             photoToAdd.setCaption(photoFile.getName());
             photoList.add(photoToAdd);
+            System.out.println(photoList.toString());
+            System.out.println(selectedAlbum.getPhotosList().toString());
             // Save data
             DataRW.writeData(albumList, path);
             adapter.notifyDataSetChanged();
@@ -90,6 +89,37 @@ public class OpenedAlbum extends AppCompatActivity {
         }
 
     }
+
+    /*
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        try {
+            albumList = DataRW.readData(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        // Need this or view doesnt update on adding a new album
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            albumList = DataRW.readData(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        // Need this or view doesnt update on adding a new album
+        adapter.notifyDataSetChanged();
+    }
+
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +132,17 @@ public class OpenedAlbum extends AppCompatActivity {
 
         Intent intent = getIntent();
         albumList = (ArrayList<Album>) intent.getSerializableExtra("albums");
+
+        /*
+        try {
+            albumList = DataRW.readData(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        */
+
         albumIndex = intent.getIntExtra("albumPosition", 0);
         recyclerView = findViewById(R.id.recyclerView2);
 
@@ -109,7 +150,10 @@ public class OpenedAlbum extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         selectedAlbum = albumList.get(albumIndex);
 
+        System.out.println(selectedAlbum);
+
         photoList = selectedAlbum.getPhotosList();
+        System.out.println(photoList.toString());
 
 
         //prob dont need
@@ -126,8 +170,6 @@ public class OpenedAlbum extends AppCompatActivity {
             selectedPhotoIndex = position;
             selectedPhoto = photoList.get(position);
             System.out.println("selected" + selectedPhoto);
-
-            //TODO highlight the selected item
         });
 
 
