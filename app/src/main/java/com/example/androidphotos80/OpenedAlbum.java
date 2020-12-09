@@ -169,17 +169,9 @@ public class OpenedAlbum extends AppCompatActivity {
         //this was causing null pointer because no adapter attached
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         selectedAlbum = albumList.get(albumIndex);
-
         System.out.println(selectedAlbum);
-
         photoList = selectedAlbum.getPhotosList();
         System.out.println(photoList.toString());
-
-
-        //prob dont need
-        //!!!omg this dumb ass line was fucking it up!
-        //photoList = selectedAlbum.getPhotosList();
-
 
         adapter = new RecyclerViewAdapterPhotos(this, photoList);
         recyclerView.setAdapter(adapter);
