@@ -102,7 +102,7 @@ public class Photo implements Serializable {
      * @param name New name for tag
      * @param value New value for tag
      */
-    public void editTag(int index, int name, String value) {
+    public void editTag(int index, String name, String value) {
         tags.get(index).setName(name);
         tags.get(index).setValue(value);
     }

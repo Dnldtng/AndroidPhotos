@@ -53,6 +53,7 @@ public class OpenedAlbum extends AppCompatActivity {
 
     public void displayButton(View view){
         Intent intent = new Intent (this, DisplayPhoto.class);
+        intent.putExtra("albumList",(Serializable) albumList);
         intent.putExtra("photoList", (Serializable) photoList);
         intent.putExtra("selectedPhotoIndex", selectedPhotoIndex);
         intent.putExtra("currentAlbum", selectedAlbum);

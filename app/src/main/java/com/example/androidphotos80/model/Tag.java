@@ -4,24 +4,24 @@ import java.io.Serializable;
 
 public class Tag implements Serializable {
     private static final long serialVersionUID = 4420084517420071942L;
-    static final int LOCATION = 1;
-    static final int PERSON = 2;
+   // static final int LOCATION = 1;
+    //static final int PERSON = 2;
 
+    private String name;
     private String value;
-    private int name;
+    //private int name;
 
-    public Tag(int name, String value){
+    public Tag(String name, String value){
         this.name = name;
         this.value = value;
     }
-
 
 
     /**
      * Returns the name of the tag
      * @return Name string
      */
-    public int getName() {
+    public String getName() {
         return name;
     }
 
@@ -29,7 +29,7 @@ public class Tag implements Serializable {
      * Sets the name of tag
      * @param name Name string
      */
-    public void setName(int name) {
+    public void setName(String name) {
         this.name = name;
     }
 

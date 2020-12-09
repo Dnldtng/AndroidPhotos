@@ -10,8 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.androidphotos80.model.Album;
 import com.example.androidphotos80.model.Tag;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,13 +24,20 @@ public class RecyclerViewAdapterDisplay extends RecyclerView.Adapter<RecyclerVie
     private OnTagItemClickListener tListener;
     private int selected_position = 0;
     private int position;
+    private ArrayList<Album> albumList = new ArrayList<Album>();
 
-    public RecyclerViewAdapterDisplay(Context context, ArrayList<Tag> tagList){
+    public RecyclerViewAdapterDisplay(Context context, ArrayList<Tag> tagList,ArrayList<Album> albumList){
         this.context = context;
         this.tagList = tagList;
+        this.albumList = albumList;
         //will need to figure out tag passing
-    }
 
+    }
+    public void updateList(ArrayList<Album> updatedList) throws IOException, ClassNotFoundException {
+        albumList = updatedList;
+
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
