@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
+import android.view.contentcapture.DataShareWriteAdapter;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 public class OpenedAlbum extends AppCompatActivity {
     private ArrayList<Album> albumList;
     private RecyclerView recyclerView;
-    public RecyclerViewAdapterPhotos adapter;
+    private RecyclerViewAdapterPhotos adapter;
     private Album selectedAlbum;
     private int albumIndex;
     private ArrayList<Photo> photoList;
@@ -61,13 +62,32 @@ public class OpenedAlbum extends AppCompatActivity {
         MoveDialog moveDialog = new MoveDialog();
 
         // Send selected photo and currentAlbum in bundle
-
         Bundle args = new Bundle();
         args.putSerializable("photo", selectedPhoto);
+        args.putSerializable("originAlbum", selectedAlbum);
         args.putInt("albumIndex", albumIndex);
+        args.putInt("selectedPhotoIndex", selectedPhotoIndex);
 
         moveDialog.setArguments(args);
         moveDialog.show(getSupportFragmentManager(), "Test");
+
+    }
+
+    public void moveUpdate(int photoIndex, Album albumRemove){
+        //destAlbum.addPhoto(addPhoto);
+
+        // Try removing photo here instead??
+        /*
+        Album albumRemove = albumList.get(albumIndex);
+        albumRemove.getPhotosList().remove(photoIndex);
+        DataRW.writeData(albumList, path);
+
+         */
+
+        //adapter.notifyItemRemoved(photoIndex);
+        adapter.notifyItemRangeChanged(photoIndex, photoList.size());
+        //adapter.notifyDataSetChanged();
+
 
     }
 
@@ -159,9 +179,9 @@ public class OpenedAlbum extends AppCompatActivity {
         path = this.getApplicationContext().getFilesDir() + "/albums.dat";
 
         Intent intent = getIntent();
-        albumList = (ArrayList<Album>) intent.getSerializableExtra("albums");
+        //albumList = (ArrayList<Album>) intent.getSerializableExtra("albums");
 
-        /*
+
         try {
             albumList = DataRW.readData(path);
         } catch (IOException e) {
@@ -169,7 +189,6 @@ public class OpenedAlbum extends AppCompatActivity {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        */
 
         albumIndex = intent.getIntExtra("albumPosition", 0);
         recyclerView = findViewById(R.id.recyclerView2);
@@ -177,7 +196,7 @@ public class OpenedAlbum extends AppCompatActivity {
         //this was causing null pointer because no adapter attached
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         selectedAlbum = albumList.get(albumIndex);
-        System.out.println(selectedAlbum);
+        System.out.println("INSIDE ALBUM :" + selectedAlbum);
         photoList = selectedAlbum.getPhotosList();
         System.out.println(photoList.toString());
 
