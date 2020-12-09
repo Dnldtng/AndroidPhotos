@@ -124,6 +124,14 @@ public class Photo implements Serializable {
     }
 
 
+    public boolean validSearch(String name, String searchString){
+            for(Tag t: tags){
+                if(t.getName().equalsIgnoreCase(name) && t.getValue().startsWith(searchString)) {
+                    return true;
+                }
+            }
+            return false;
+    }
 
     @Override
     public boolean equals(Object o) {

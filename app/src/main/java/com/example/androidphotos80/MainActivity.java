@@ -202,20 +202,27 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                         if(radioID == R.id.locationButton){
                             // Location checked
                             System.out.println("Location");
-                            Tag testLocation = new Tag("location", "inputText");
                             // Check all location tags for search
                             for(Album a : albumList){
                                 for(Photo p : a.getPhotosList()){
-                                    for(Tag t : p.getTags()){
-
+                                    if(p.validSearch("location", inputText)){
+                                        resultList.add(p);
                                     }
                                 }
                             }
                         }else if(radioID == R.id.personButton){
                             // Person checked
                             System.out.println("Person");
+                            for(Album a : albumList){
+                                for(Photo p : a.getPhotosList()){
+                                    if(p.validSearch("person", inputText)){
+                                        resultList.add(p);
+                                    }
+                                }
+                            }
                         }else{
-                            // Nothing?
+                            // TODO Add error toast dialog
+
                         }
                     }
                 })
