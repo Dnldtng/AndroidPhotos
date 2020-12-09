@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private RecyclerView recyclerView;
     private String newAlbumText;
     private String path;
+    RecyclerViewAdapter adapter;
+
 
     private void prepareTheList(){
         int count = 0;
@@ -93,8 +96,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+            albumList = new ArrayList<Album>();
             DataRW.writeData(albumList, path);
+            System.out.println("WROTE OUT");
         }else{
             try {
                 albumList = (ArrayList<Album>) DataRW.readData(path);
@@ -106,10 +110,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             System.out.println("EXISTS!!, LOADED");
         }
 
+        //TESTS
+        System.out.println(albumList.toString());
+
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(albumList,  this, this);
+        adapter = new RecyclerViewAdapter(albumList,  this, this);
         recyclerView.setAdapter(adapter);
         FloatingActionButton fab = findViewById(R.id.fab);
 
@@ -131,8 +138,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                 albumList.add(newAlbum);
                 // Save data
                 DataRW.writeData(albumList, path);
-                //adapter.notifyItemInserted(albumList.size() - 1);
-                adapter.notifyDataSetChanged();
+
+                try {
+                    adapter.updateList(albumList);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                // adapter.notifyItemInserted(albumList.size() - 1);
+                //adapter.notifyDataSetChanged();
+
             }
         });
 
@@ -154,6 +171,39 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             }
         });
     }
+
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        try {
+            albumList = DataRW.readData(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        // Need this or view doesnt update on adding a new album
+        //adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        try {
+            albumList = DataRW.readData(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        // Need this or view doesnt update on adding a new album
+        //adapter.notifyDataSetChanged();
+    }
+
+
+
+
 
     @Override
     public void onNoteClick(int position) {

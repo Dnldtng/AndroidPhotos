@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerViewAdapterPhotos.ViewHolder> {
 
-    private ArrayList<Album> albumList;
+    private ArrayList<Album> albumList = new ArrayList<Album>();
     private Context context;
     private ArrayList<Photo> photoList;
     private OnItemClickListener mListener;
@@ -32,7 +33,6 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
         this.photoList = photoList;
         path = context.getFilesDir() + "/albums.dat";
     }
-
 
     @NonNull
     @Override
@@ -49,8 +49,7 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
         Photo photo = photoList.get(position);
         holder.thumbnail.setImageURI(Uri.parse(photo.getPath()));
         holder.photoName.setText(photo.getCaption());
-        holder.itemView.setBackgroundColor(selected_position == position ? context.getResources().getColor(R.color.colorPrimaryDark) : context.getResources().getColor(R.color.colorPrimary));
-
+        holder.itemView.setBackgroundColor(selected_position == position ? context.getResources().getColor(R.color.lightgray) : context.getResources().getColor(R.color.white));
     }
 
     @Override
@@ -62,7 +61,6 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
 
         ImageView thumbnail;
         TextView photoName;
-
 
         public ViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
@@ -83,7 +81,6 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
                 }
             });
         }
-
     }
 
     public interface OnItemClickListener{

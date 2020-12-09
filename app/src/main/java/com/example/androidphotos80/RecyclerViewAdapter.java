@@ -24,6 +24,7 @@ import com.example.androidphotos80.model.Album;
 import com.example.androidphotos80.model.DataRW;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.mOnNoteListener = onNoteListener;
         this.context = context;
         path = context.getFilesDir() + "/albums.dat";
+    }
+
+    public void updateList(ArrayList<Album> updatedList) throws IOException, ClassNotFoundException {
+        albumList = updatedList;
+
+        notifyDataSetChanged();
     }
 
     @NonNull

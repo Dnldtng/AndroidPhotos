@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Photo implements Serializable {
     private static final long serialVersionUID = 5771854261828268090L;
@@ -121,4 +122,14 @@ public class Photo implements Serializable {
     public void setCaption(String caption) {
         this.caption = caption;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Photo photo = (Photo) o;
+        return path.equals(photo.path);
+    }
+
 }

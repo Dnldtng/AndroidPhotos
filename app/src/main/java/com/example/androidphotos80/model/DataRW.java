@@ -18,6 +18,7 @@ public class DataRW {
             oos.writeObject(albums);
             oos.close();
             fos.close();
+            System.out.println("WRITTEN DATA");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,6 +30,7 @@ public class DataRW {
         ArrayList<Album> albums = (ArrayList<Album>) ois.readObject();
         ois.close();
         fis.close();
+        System.out.println("READ DATA");
         return albums;
     }
 

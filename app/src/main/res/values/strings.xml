@@ -113,4 +113,6 @@
     <string name="add_photo">add photo</string>
     <string name="delete_photo">delete photo</string>
     <string name="search_photo">search photo</string>
+    <string name="move_title">Select Destination Album</string>
+
 </resources>
