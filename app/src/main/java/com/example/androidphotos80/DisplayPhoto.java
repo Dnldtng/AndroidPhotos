@@ -89,7 +89,7 @@ public class DisplayPhoto extends AppCompatActivity {
         builder.setView(searchLayout);
         builder.setTitle("Search by tag")
                 .setCancelable(true)
-                .setPositiveButton("Search", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Search logic -> go through album list, find photos with tags that match and get into photolist. Then display in new activity.
@@ -111,6 +111,7 @@ public class DisplayPhoto extends AppCompatActivity {
                             tagList.add(tempTag);
                             // Save data
                             DataRW.writeData(albumList, path);
+                            adapter.notifyDataSetChanged();
 
                         }else if(radioID == R.id.personButton){
                                 // Person checked
@@ -126,6 +127,7 @@ public class DisplayPhoto extends AppCompatActivity {
                             tagList.add(tempTag);
                             // Save data
                             DataRW.writeData(albumList, path);
+                            adapter.notifyDataSetChanged();
 
                         }else{
                                 // Nothing?
@@ -161,10 +163,15 @@ public class DisplayPhoto extends AppCompatActivity {
         }
         selectedPhoto = photoList.get(selectedPhotoIndex);
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
-        tagList.clear();
-        ArrayList<Tag> newTags = selectedPhoto.getTags();
-        tagList = newTags;
-        adapter.notifyDataSetChanged();
+
+        ArrayList<Tag> newTagList = selectedPhoto.getTags();
+        adapter = new RecyclerViewAdapterDisplay(this, newTagList,albumList);
+        recyclerView.setAdapter(adapter);
+        adapter.setOnTagItemClickListener(position -> {
+            selectedTagIndex = position;
+            selectedTag = tagList.get(position);
+            System.out.println("selected: " + selectedTag);
+        });
 
     }
 
@@ -176,11 +183,20 @@ public class DisplayPhoto extends AppCompatActivity {
         }
         selectedPhoto = photoList.get(selectedPhotoIndex);
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
-
+        /*
         tagList.clear();
         ArrayList<Tag> newTags = selectedPhoto.getTags();
         tagList = newTags;
         adapter.notifyDataSetChanged();
+        */
+        ArrayList<Tag> newTagList = selectedPhoto.getTags();
+        adapter = new RecyclerViewAdapterDisplay(this, newTagList,albumList);
+        recyclerView.setAdapter(adapter);
+        adapter.setOnTagItemClickListener(position -> {
+            selectedTagIndex = position;
+            selectedTag = tagList.get(position);
+            System.out.println("selected: " + selectedTag);
+        });
     }
 
 
