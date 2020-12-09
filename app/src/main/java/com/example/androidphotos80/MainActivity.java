@@ -13,6 +13,7 @@ import android.os.Bundle;
 import com.example.androidphotos80.model.Album;
 import com.example.androidphotos80.model.DataRW;
 import com.example.androidphotos80.model.Photo;
+import com.example.androidphotos80.model.Tag;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -197,12 +198,19 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                         EditText searchText = searchLayout.findViewById(R.id.searchText);
                         String inputText = searchText.getText().toString();
                         int radioID = rg.getCheckedRadioButtonId();
+                        ArrayList<Photo> resultList = new ArrayList<Photo>();
                         if(radioID == R.id.locationButton){
                             // Location checked
                             System.out.println("Location");
+                            Tag testLocation = new Tag("location", "inputText");
                             // Check all location tags for search
+                            for(Album a : albumList){
+                                for(Photo p : a.getPhotosList()){
+                                    for(Tag t : p.getTags()){
 
-
+                                    }
+                                }
+                            }
                         }else if(radioID == R.id.personButton){
                             // Person checked
                             System.out.println("Person");
@@ -261,8 +269,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         intent.putExtra("albums", (Serializable) albumList);
         intent.putExtra("albumPosition", position);
         startActivity(intent);
-
-
 
     }
 
