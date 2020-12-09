@@ -127,6 +127,7 @@ public class DisplayPhoto extends AppCompatActivity {
                             System.out.println("Added tag " + tempTag + " To Photo: " + selectedPhoto);
                             // Save data
                             DataRW.writeData(albumList, path);
+                            adapter.notifyDataSetChanged();
 
                         }else if(radioID == R.id.personButton){
                             // Person checked
@@ -145,6 +146,9 @@ public class DisplayPhoto extends AppCompatActivity {
                             System.out.println(selectedPhoto.getTags().toString());
                             // Save data
                             DataRW.writeData(albumList, path);
+
+                            adapter.notifyDataSetChanged();
+
                         }else{
                                 // Nothing?
                         }
@@ -180,10 +184,14 @@ public class DisplayPhoto extends AppCompatActivity {
         selectedPhoto = photoList.get(selectedPhotoIndex);
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
 
-        //tagList.clear();
-        ArrayList<Tag> newTags = selectedPhoto.getTags();
-        //tagList = newTags;
-        adapter.notifyDataSetChanged();
+        ArrayList<Tag> newTagList = selectedPhoto.getTags();
+        adapter = new RecyclerViewAdapterDisplay(this, newTagList,albumList);
+        recyclerView.setAdapter(adapter);
+        adapter.setOnTagItemClickListener(position -> {
+            selectedTagIndex = position;
+            selectedTag = tagList.get(position);
+            System.out.println("selected: " + selectedTag);
+        });
 
     }
 
@@ -195,11 +203,20 @@ public class DisplayPhoto extends AppCompatActivity {
         }
         selectedPhoto = photoList.get(selectedPhotoIndex);
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
-
-       // tagList.clear();
+        /*
+        tagList.clear();
         ArrayList<Tag> newTags = selectedPhoto.getTags();
         //tagList = newTags;
         adapter.notifyDataSetChanged();
+        */
+        ArrayList<Tag> newTagList = selectedPhoto.getTags();
+        adapter = new RecyclerViewAdapterDisplay(this, newTagList,albumList);
+        recyclerView.setAdapter(adapter);
+        adapter.setOnTagItemClickListener(position -> {
+            selectedTagIndex = position;
+            selectedTag = tagList.get(position);
+            System.out.println("selected: " + selectedTag);
+        });
     }
 
 
