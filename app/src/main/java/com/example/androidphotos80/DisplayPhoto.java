@@ -52,6 +52,7 @@ public class DisplayPhoto extends AppCompatActivity {
         }else{
             selectedPhotoIndex = selectedPhotoIndex - 1;
         }
+        selectedPhoto = photoList.get(selectedPhotoIndex);
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
     }
 
@@ -61,6 +62,7 @@ public class DisplayPhoto extends AppCompatActivity {
         }else{
             selectedPhotoIndex = selectedPhotoIndex + 1;
         }
+        selectedPhoto = photoList.get(selectedPhotoIndex);
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
     }
 
