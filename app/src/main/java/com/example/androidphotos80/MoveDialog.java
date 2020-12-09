@@ -76,7 +76,7 @@ public class MoveDialog extends AppCompatDialogFragment {
                 .setPositiveButton("Move", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        /*
+
                         destinationAlbum = (Album) albumSpinner.getSelectedItem();
                         // Add photo
                         destinationAlbum.addPhoto(selectedPhoto);
@@ -86,7 +86,6 @@ public class MoveDialog extends AppCompatDialogFragment {
                         currentAlbum.getPhotosList().remove(selectedPhoto);
                         DataRW.writeData(albumList, path);
 
-                         */
                     }
                 });
 

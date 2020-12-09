@@ -58,18 +58,35 @@ public class OpenedAlbum extends AppCompatActivity {
 
     public void moveButton(View view){
         MoveDialog moveDialog = new MoveDialog();
+
         // Send selected photo and currentAlbum in bundle
+
         Bundle args = new Bundle();
         args.putSerializable("photo", selectedPhoto);
         args.putInt("albumIndex", albumIndex);
+
+
+        /*
+        Intent intent = new Intent(this, moveDialog.getClass());
+        intent.putExtra("photo", selectedPhoto);
+        intent.putExtra("albumIndex", albumIndex);
+        */
+
+
         moveDialog.setArguments(args);
 
         moveDialog.show(getSupportFragmentManager(), "Test");
+        //moveDialog.startActivityForResult(intent, 30);
+
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+
+
 
         // Got our image, need to add it to photoList
         if(requestCode == 20 && resultCode == Activity.RESULT_OK){
