@@ -178,7 +178,7 @@ public class DisplayPhoto extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Error: No Tags to delete", Toast.LENGTH_SHORT).show();
             return;
         }
-        System.out.println(""+albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags().size());
+        //System.out.println(""+albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags().size());
         if(selectedTagIndex>albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags().size()-1 || selectedTagIndex<0){
             Toast.makeText(getApplicationContext(), "Error: Nothing selected to delete", Toast.LENGTH_SHORT).show();
             return;
