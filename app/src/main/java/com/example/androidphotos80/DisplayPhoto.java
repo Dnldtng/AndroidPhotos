@@ -78,6 +78,7 @@ public class DisplayPhoto extends AppCompatActivity {
         }
 
         photoList = (ArrayList<Photo>) intent.getSerializableExtra("photoList");
+
         selectedPhotoIndex = intent.getIntExtra("selectedPhotoIndex", 0);
         albumIndex = intent.getIntExtra("albumIndex", 0);
         currentAlbum = albumList.get(albumIndex);
@@ -122,12 +123,15 @@ public class DisplayPhoto extends AppCompatActivity {
                             albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).addTag((new Tag("location", inputText)));
                             //selectedPhoto.addTag(new Tag("location", inputText));
                             //adapter.notifyItemInserted(selectedPhoto.getTags().size() - 1);
+
                             adapter.notifyDataSetChanged();
                             DataRW.writeData(albumList, path);
+
 
                             /*
                             System.out.println(albumList.get(0).getPhotosList().get(0));
                             System.out.println(albumList.get(0).getPhotosList().get(0).getTags().toString());
+
                             System.out.println(selectedPhoto.getTags().toString());
 
                              */
@@ -148,8 +152,10 @@ public class DisplayPhoto extends AppCompatActivity {
                     }
                 });
 
+
         AlertDialog addAlert = builder.create();
         addAlert.show();
+
 
     }
 
