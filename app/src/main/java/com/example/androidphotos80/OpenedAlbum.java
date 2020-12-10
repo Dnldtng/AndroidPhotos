@@ -1,6 +1,8 @@
 package com.example.androidphotos80;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -20,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.provider.OpenableColumns;
 import android.view.View;
 import android.view.contentcapture.DataShareWriteAdapter;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
@@ -37,6 +41,8 @@ public class OpenedAlbum extends AppCompatActivity {
     private Photo selectedPhoto;
     private int selectedPhotoIndex;
     private String path;
+    private Spinner albumSpinner;
+
 
     public void addButton(View view){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
@@ -80,17 +86,59 @@ public class OpenedAlbum extends AppCompatActivity {
     }
 
     public void moveButton(View view){
-        MoveDialog moveDialog = new MoveDialog();
 
-        // Send selected photo and currentAlbum in bundle
-        Bundle args = new Bundle();
-        args.putSerializable("photo", selectedPhoto);
-        args.putSerializable("originAlbum", selectedAlbum);
-        args.putInt("albumIndex", albumIndex);
-        args.putInt("selectedPhotoIndex", selectedPhotoIndex);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final View moveLayout = getLayoutInflater().inflate(R.layout.move_dialog, null);
 
-        moveDialog.setArguments(args);
-        moveDialog.show(getSupportFragmentManager(), "Test");
+        // selectedPhoto can be null if it is the user does not select anything and tries to move
+        // the first photo without clicking it. Null check here and default to first in list
+        if(selectedPhoto == null){
+            selectedPhoto = albumList.get(albumIndex).getPhotosList().get(0);
+        }
+
+        Album currentAlbum = albumList.get(albumIndex);
+        ArrayList<Album> destinationList = new ArrayList<Album>(albumList);
+        // Get rid of current album for destination list
+        destinationList.remove(albumIndex);
+
+        ArrayAdapter<Album> adapter = new ArrayAdapter<Album>(this, android.R.layout.simple_spinner_item, destinationList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        albumSpinner.setAdapter(adapter);
+
+        builder.setView(moveLayout)
+                .setTitle("Move Photo")
+                .setCancelable(true)
+                .setPositiveButton("Move Photo", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Album destinationAlbum = (Album) albumSpinner.getSelectedItem();
+                        // Add photo
+                        destinationAlbum.addPhoto(selectedPhoto);
+                        //DataRW.writeData(albumList, path);
+
+                        // Remove photo
+                        currentAlbum.getPhotosList().remove(selectedPhotoIndex);
+
+                        DataRW.writeData(albumList, path);
+
+                        // Calls moveUpdate method in openedAlbum to notify
+                        System.out.println("Current Album: " + currentAlbum + ", albumIndex: " + albumIndex +  ", selectedPhotoIndex: " + selectedPhotoIndex +
+                                ", selectedPhoto: " + selectedPhoto + ", destinationAlbum: " + destinationAlbum );
+
+                        //((OpenedAlbum)getActivity()).moveUpdate(currentAlbumIndex, selectedPhotoIndex, selectedPhoto, destinationAlbum);
+                        System.out.println(selectedPhotoIndex + " " + currentAlbum);
+
+                        //((OpenedAlbum)getActivity()).moveUpdate(selectedPhotoIndex, currentAlbum);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //cancel empty
+                    }
+                });
+        AlertDialog moveAlert = builder.create();
+        moveAlert.show();
     }
 
     public void moveUpdate(int photoIndex, Album albumRemove){
