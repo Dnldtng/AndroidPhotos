@@ -102,9 +102,10 @@ public class OpenedAlbum extends AppCompatActivity {
         destinationList.remove(albumIndex);
         albumSpinner = (Spinner) view.findViewById(R.id.albumSpinner);
 
-        ArrayAdapter<Album> adapter = new ArrayAdapter<Album>(this, android.R.layout.simple_spinner_item, destinationList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        albumSpinner.setAdapter(adapter);
+        albumSpinner = moveLayout.findViewById(R.id.albumSpinner);
+        ArrayAdapter<Album> spinnerAdapter = new ArrayAdapter<Album>(this, android.R.layout.simple_spinner_item, destinationList);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        albumSpinner.setAdapter(spinnerAdapter);
 
         builder.setView(moveLayout)
                 .setTitle("Move Photo")
@@ -113,6 +114,14 @@ public class OpenedAlbum extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Album destinationAlbum = (Album) albumSpinner.getSelectedItem();
+
+
+                        if(destinationAlbum.getPhotosList().contains(currentAlbum.getPhotosList().get(selectedPhotoIndex))){
+                            //ERROR already exists
+                            Toast.makeText(getApplicationContext(), "Error: Photo already in destination album", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
                         // Add photo
                         destinationAlbum.addPhoto(selectedPhoto);
                         //DataRW.writeData(albumList, path);
@@ -121,15 +130,7 @@ public class OpenedAlbum extends AppCompatActivity {
                         currentAlbum.getPhotosList().remove(selectedPhotoIndex);
 
                         DataRW.writeData(albumList, path);
-
-                        // Calls moveUpdate method in openedAlbum to notify
-                        System.out.println("Current Album: " + currentAlbum + ", albumIndex: " + albumIndex +  ", selectedPhotoIndex: " + selectedPhotoIndex +
-                                ", selectedPhoto: " + selectedPhoto + ", destinationAlbum: " + destinationAlbum );
-
-                        //((OpenedAlbum)getActivity()).moveUpdate(currentAlbumIndex, selectedPhotoIndex, selectedPhoto, destinationAlbum);
-                        System.out.println(selectedPhotoIndex + " " + currentAlbum);
-
-                        //((OpenedAlbum)getActivity()).moveUpdate(selectedPhotoIndex, currentAlbum);
+                        adapter.notifyItemRemoved(selectedPhotoIndex);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -138,6 +139,7 @@ public class OpenedAlbum extends AppCompatActivity {
                         //cancel empty
                     }
                 });
+
         AlertDialog moveAlert = builder.create();
         moveAlert.show();
     }

@@ -51,6 +51,5 @@ public class searchResults extends AppCompatActivity {
         adapter = new RecyclerViewAdapterSearch(this, finalResults);
         recyclerView.setAdapter(adapter);
 
-
     }
 }
