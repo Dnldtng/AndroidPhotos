@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
@@ -134,6 +135,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                     }
                 }
 
+                try {
+                    albumList = DataRW.readData(path);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
                 Album newAlbum = new Album(newAlbumText);
                 albumList.add(newAlbum);
                 // Save data
