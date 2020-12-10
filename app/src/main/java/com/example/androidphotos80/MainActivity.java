@@ -202,13 +202,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                                     }
                                 }
                             }
-
                             // Added all AND results, pass to activity
                             Intent locationIntent = new Intent(getApplicationContext(), searchResults.class);
                             locationIntent.putExtra("results", resultList);
                             //locationIntent.putExtra("flag", 1);
                             startActivity(locationIntent);
-
                         }else if(radioID == R.id.orButton){
                             // Must meet location OR person checked
                             System.out.println("OR");
@@ -222,15 +220,34 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                                 }
                             }
 
-
                             // Added all OR results, pass to activity
                             Intent locationIntent = new Intent(getApplicationContext(), searchResults.class);
                             locationIntent.putExtra("results", resultList);
                             //locationIntent.putExtra("flag", 1);
                             startActivity(locationIntent);
 
+                        }else if (radioID == R.id.singleButton || radioID == -1){
+                            // Single tag search
+                            System.out.println("SINGLE");
+                            // Check only one field is populated.
+                            // If both fields are empty, or both are populated error for single tag
+                            if((personInput.isEmpty() && locationInput.isEmpty()) || (personInput.isEmpty() && !locationInput.isEmpty()) || (!personInput.isEmpty() && locationInput.isEmpty())  ){
+                                Toast.makeText(getApplicationContext(), "Error: One tag search must be filled for single tag search." , Toast.LENGTH_SHORT).show();
+                                //System.out.println("Person: " + personInput + ", Location: " + locationInput);
+                                if(personInput.equalsIgnoreCase("")){
+                                    System.out.print("Person Empty");
+                                }
+                                if(locationInput.equalsIgnoreCase("")){
+                                    System.out.print("Location Empty");
+                                }
+                                return;
+                            }else{
+                                // Search is ok
+                                System.out.println("OK SEARCH");
+                            }
+
                         }else{
-                            // TODO Add error toast dialog
+                            // Everything should already be caught in singletag
                         }
                     }
                 })
