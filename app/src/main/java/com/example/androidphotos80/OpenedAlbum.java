@@ -68,6 +68,11 @@ public class OpenedAlbum extends AppCompatActivity {
     }
 
     public void displayButton(View view){
+        if(albumList.get(albumIndex).getPhotosList().isEmpty()){
+            Toast.makeText(getApplicationContext(), "Error: No photo to display" , Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent displayIntent = new Intent (this, DisplayPhoto.class);
         try {
             albumList = DataRW.readData(path);
@@ -86,6 +91,11 @@ public class OpenedAlbum extends AppCompatActivity {
     }
 
     public void moveButton(View view){
+
+        if(albumList.get(albumIndex).getPhotosList().isEmpty()){
+            Toast.makeText(getApplicationContext(), "Error: No photo to move" , Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final View moveLayout = getLayoutInflater().inflate(R.layout.move_dialog, null);
