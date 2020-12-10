@@ -100,6 +100,7 @@ public class OpenedAlbum extends AppCompatActivity {
         ArrayList<Album> destinationList = new ArrayList<Album>(albumList);
         // Get rid of current album for destination list
         destinationList.remove(albumIndex);
+        albumSpinner = (Spinner) view.findViewById(R.id.albumSpinner);
 
         albumSpinner = moveLayout.findViewById(R.id.albumSpinner);
         ArrayAdapter<Album> spinnerAdapter = new ArrayAdapter<Album>(this, android.R.layout.simple_spinner_item, destinationList);

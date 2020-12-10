@@ -104,7 +104,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         final AlertDialog alert = builder.create();
 
-        // Delete button listener for each album list item. TODO Add saving stuff
+        // Delete button listener for each album list item.
         holder.deleteButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
