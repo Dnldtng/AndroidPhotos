@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 newAlbumText = input.getText().toString();
+
                 // Check if album with name already exists
                 for(Album a : albumList){
                     if(a.getName().equalsIgnoreCase(newAlbumText)){

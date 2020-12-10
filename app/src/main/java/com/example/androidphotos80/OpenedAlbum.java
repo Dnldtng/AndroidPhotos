@@ -114,7 +114,6 @@ public class OpenedAlbum extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Album destinationAlbum = (Album) albumSpinner.getSelectedItem();
 
-
                         if(destinationAlbum.getPhotosList().contains(currentAlbum.getPhotosList().get(selectedPhotoIndex))){
                             //ERROR already exists
                             Toast.makeText(getApplicationContext(), "Error: Photo already in destination album", Toast.LENGTH_SHORT).show();
@@ -230,39 +229,6 @@ public class OpenedAlbum extends AppCompatActivity {
         }
         return result;
     }
-
-    /*
-    @Override
-    public void onRestart(){
-        super.onRestart();
-        try {
-            albumList = DataRW.readData(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        // Need this or view doesnt update on adding a new album
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        try {
-            albumList = DataRW.readData(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-
-        // Need this or view doesnt update on adding a new album
-        //adapter.notifyDataSetChanged();
-    }
-    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

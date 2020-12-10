@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -36,6 +37,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Context context;
     private String renameAlbumText;
     private String path;
+    ViewGroup parent;
 
     public RecyclerViewAdapter(ArrayList<Album> albumList, OnNoteListener onNoteListener, Context context) {
         this.albumList = albumList;
@@ -55,6 +57,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent , false);
         ViewHolder holder  = new ViewHolder(view, mOnNoteListener);
+        this.parent = parent;
         return holder;
     }
 
@@ -76,6 +79,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 renameAlbumText = input.getText().toString();
+                // Check if album with name already exists
+                for(Album a : albumList){
+                    if(a.getName().equalsIgnoreCase(renameAlbumText)){
+                        Toast.makeText(parent.getContext(), "Error: Album name already exists" , Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
                 Album albumToRename = albumList.get(position);
                 albumToRename.renameAlbum(renameAlbumText);
                 // Save data
