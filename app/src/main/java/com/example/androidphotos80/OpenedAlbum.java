@@ -132,14 +132,15 @@ public class OpenedAlbum extends AppCompatActivity {
                         }
 
                         // Add photo
-                        destinationAlbum.addPhoto(selectedPhoto);
+                        destinationAlbum.addPhoto(albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex));
                         //DataRW.writeData(albumList, path);
 
                         // Remove photo
-                        currentAlbum.getPhotosList().remove(selectedPhotoIndex);
+                        albumList.get(albumIndex).getPhotosList().remove(selectedPhotoIndex);
 
                         DataRW.writeData(albumList, path);
-                        adapter.notifyItemRemoved(selectedPhotoIndex);
+                        //adapter.notifyItemRemoved(selectedPhotoIndex);
+                        adapter.notifyDataSetChanged();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
