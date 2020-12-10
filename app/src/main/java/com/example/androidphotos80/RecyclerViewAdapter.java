@@ -82,6 +82,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         builder.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                try {
+                    albumList = DataRW.readData(path);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
                 renameAlbumText = input.getText().toString();
 
                 // Cant have empty album names
@@ -94,15 +103,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 for(Album a : albumList){
                     if(a.getName().equalsIgnoreCase(renameAlbumText)){
                         Toast.makeText(parent.getContext(), "Error: Album name already exists" , Toast.LENGTH_SHORT).show();
+                        System.out.println(albumList.toString());
                         return;
                     }
                 }
 
-                Album albumToRename = albumList.get(position);
-                albumToRename.renameAlbum(renameAlbumText);
+                //Album albumToRename = albumList.get(position);
+                //albumToRename.renameAlbum(renameAlbumText);
+                albumList.get(position).renameAlbum(renameAlbumText);
                 // Save data
                 DataRW.writeData(albumList, path);
                 notifyDataSetChanged();
+
+                // Bad code for the hail mary save?
+                Intent renameIntent  = new Intent(activity, MainActivity.class);
+                activity.finish();
+                activity.startActivity(renameIntent);
+
             }
         });
 
