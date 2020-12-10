@@ -96,6 +96,12 @@ public class OpenedAlbum extends AppCompatActivity {
     public void moveButton(View view){
         // TODO Fix weird tag error on move
 
+        // If only one album in th list and we hit move toast for no other albums
+        if(albumList.size() == 1){
+            Toast.makeText(getApplicationContext(), "Error: No other albums exist" , Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if(albumList.get(albumIndex).getPhotosList().isEmpty()){
             Toast.makeText(getApplicationContext(), "Error: No photo to move" , Toast.LENGTH_SHORT).show();
             return;
