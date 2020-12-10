@@ -44,7 +44,6 @@ public class OpenedAlbum extends AppCompatActivity {
     private String path;
     private Spinner albumSpinner;
 
-
     public void addButton(View view){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);

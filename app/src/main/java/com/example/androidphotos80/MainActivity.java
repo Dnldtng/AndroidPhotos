@@ -208,6 +208,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                             // Must meet location AND person
                             System.out.println("AND");
 
+                            // Check that both inputs are not empty
+                            if(personInput.isEmpty() || locationInput.isEmpty()){
+                                Toast.makeText(getApplicationContext(), "Error: Both search fields must be filled for AND search" , Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
                             // Get AND results
                             for(Album a : albumList){
                                 for(Photo p : a.getPhotosList()){
@@ -224,6 +230,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                         }else if(radioID == R.id.orButton){
                             // Must meet location OR person checked
                             System.out.println("OR");
+
+                            // Check that both inputs are not empty
+                            if(personInput.isEmpty() || locationInput.isEmpty()){
+                                Toast.makeText(getApplicationContext(), "Error: Both search fields must be filled for OR search" , Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
 
                             // Get OR results
                             for(Album a : albumList){
