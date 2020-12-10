@@ -6,16 +6,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.example.androidphotos80.model.Album;
 import com.example.androidphotos80.model.DataRW;
 import com.example.androidphotos80.model.Photo;
-import com.example.androidphotos80.model.Tag;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -23,24 +19,16 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.ContactsContract;
 import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.OnNoteListener{
 
@@ -186,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     public void searchButton(View view) {
         System.out.println("SEARCH BUTTON");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final View searchLayout = getLayoutInflater().inflate(R.layout.search_dialog, null);
+        final View searchLayout = getLayoutInflater().inflate(R.layout.tag_dialog, null);
         builder.setView(searchLayout);
         builder.setTitle("Search by tag")
                 .setCancelable(true)
@@ -194,28 +182,35 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Search logic -> go through album list, find photos with tags that match and get into photolist. Then display in new activity.
-                        RadioGroup rg = searchLayout.findViewById(R.id.radioGroup);
-                        EditText searchText = searchLayout.findViewById(R.id.searchText);
-                        String inputText = searchText.getText().toString();
+                        RadioGroup rg = searchLayout.findViewById(R.id.radioGroupSearch);
+                        EditText personText = searchLayout.findViewById(R.id.personText);
+                        EditText locationText = searchLayout.findViewById(R.id.locationText);
+                        String personInput = personText.getText().toString();
+                        String locationInput = locationText.getText().toString();
                         int radioID = rg.getCheckedRadioButtonId();
                         ArrayList<Photo> resultList = new ArrayList<Photo>();
-                        if(radioID == R.id.locationButton){
-                            // Location checked
-                            System.out.println("Location");
+                        if(radioID == R.id.andButton){
+                            // Must meet location AND person
+                            System.out.println("AND");
                             // Check all location tags for search
                             for(Album a : albumList){
                                 for(Photo p : a.getPhotosList()){
-                                    if(p.validSearch("location", inputText)){
+                                    if(p.validSearch("location", locationInput)){
                                         resultList.add(p);
                                     }
                                 }
                             }
-                        }else if(radioID == R.id.personButton){
-                            // Person checked
-                            System.out.println("Person");
+                            // Added all location results, pass to activity
+                            Intent locationIntent = new Intent(getApplicationContext(), searchResults.class);
+                            locationIntent.putExtra("results", resultList);
+                            locationIntent.putExtra("flag", 1);
+                            startActivity(locationIntent);
+                        }else if(radioID == R.id.orButton){
+                            // Must meet location OR person checked
+                            System.out.println("OR");
                             for(Album a : albumList){
                                 for(Photo p : a.getPhotosList()){
-                                    if(p.validSearch("person", inputText)){
+                                    if(p.validSearch("person", personInput)){
                                         resultList.add(p);
                                     }
                                 }

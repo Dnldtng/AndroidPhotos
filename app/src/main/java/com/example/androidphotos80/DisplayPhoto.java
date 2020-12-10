@@ -6,17 +6,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import android.provider.ContactsContract;
-import android.text.InputType;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,7 +24,6 @@ import com.example.androidphotos80.model.Tag;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DisplayPhoto extends AppCompatActivity {
 
@@ -108,7 +102,7 @@ public class DisplayPhoto extends AppCompatActivity {
 
     public void addTagButton(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final View searchLayout = getLayoutInflater().inflate(R.layout.search_dialog, null);
+        final View searchLayout = getLayoutInflater().inflate(R.layout.tag_dialog, null);
         builder.setView(searchLayout);
         builder.setTitle("Add Tag")
                 .setCancelable(true)
@@ -233,6 +227,5 @@ public class DisplayPhoto extends AppCompatActivity {
 
 
     }
-
 
 }
