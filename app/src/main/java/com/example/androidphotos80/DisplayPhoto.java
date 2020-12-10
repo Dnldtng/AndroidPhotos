@@ -34,16 +34,22 @@ import java.util.List;
 public class DisplayPhoto extends AppCompatActivity {
 
     private ArrayList<Album> albumList;
+
     private TextView mTextView;
-    private ArrayList<Photo> photoList;
-    private int selectedPhotoIndex;
     private ImageView imageView;
     private Button previousButton, nextButton;
-    private Photo selectedPhoto;
-    private Album currentAlbum;
     private RecyclerView recyclerView;
     private RecyclerViewAdapterDisplay adapter;
+
+    private ArrayList<Photo> photoList;
+
+    private int selectedPhotoIndex;
     private int selectedTagIndex;
+    private int albumIndex;
+
+    private Photo selectedPhoto;
+    private Album currentAlbum;
+
     private Tag selectedTag;
     private String typeSelected = "person";
     private String path;
@@ -55,6 +61,7 @@ public class DisplayPhoto extends AppCompatActivity {
         mTextView = (TextView) findViewById(R.id.text);
         previousButton = findViewById(R.id.previousButton);
         nextButton = findViewById(R.id.nextButton);
+        imageView = (ImageView)findViewById(R.id.imageView);
 
         System.out.println("DISPLAY PHOTO ON CREATE CALLED");
 
@@ -72,22 +79,23 @@ public class DisplayPhoto extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
         photoList = (ArrayList<Photo>) intent.getSerializableExtra("photoList");
-        currentAlbum = (Album) intent.getSerializableExtra("currentAlbum");
         selectedPhotoIndex = intent.getIntExtra("selectedPhotoIndex", 0);
         selectedPhoto = photoList.get(selectedPhotoIndex);
-        System.out.println("Selected Photo: " + selectedPhoto);
-        System.out.println(albumList);
-        imageView = (ImageView)findViewById(R.id.imageView);
+        albumIndex = intent.getIntExtra("albumIndex", 0);
+        currentAlbum = albumList.get(albumIndex);
+        System.out.println("Selected Photo: " + selectedPhoto + "Tags: " + selectedPhoto.getTags());
+
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
 
         recyclerView = findViewById(R.id.recyclerView3);
 
-        //tagList = selectedPhoto.getTags();
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RecyclerViewAdapterDisplay(this, selectedPhoto.getTags(), albumList);
+        adapter = new RecyclerViewAdapterDisplay(this, albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags(), albumList);
         recyclerView.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
 
         //TEST
         System.out.println("TagList: " + selectedPhoto.getTags().toString());
@@ -101,83 +109,61 @@ public class DisplayPhoto extends AppCompatActivity {
     }
 
     public void addTagButton(View view){
-        System.out.println("ADD BUTTON");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final View searchLayout = getLayoutInflater().inflate(R.layout.search_dialog, null);
         builder.setView(searchLayout);
-        builder.setTitle("Search by tag")
+        builder.setTitle("Add Tag")
                 .setCancelable(true)
-                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Add Tag", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Search logic -> go through album list, find photos with tags that match and get into photolist. Then display in new activity.
                         RadioGroup rg = searchLayout.findViewById(R.id.radioGroup);
-                        EditText searchText = searchLayout.findViewById(R.id.searchText);
-                        String inputText = searchText.getText().toString();
+                        EditText addText = searchLayout.findViewById(R.id.searchText);
+                        String inputText = addText.getText().toString();
                         int radioID = rg.getCheckedRadioButtonId();
                         if(radioID == R.id.locationButton){
-                            // Location checked
-                            System.out.println("Location");
-                            Tag tempTag = new Tag("location", inputText);
-                            // Check if album with name already exists
-                            for(Tag t : selectedPhoto.getTags()) {
-                                if (t.equals(tempTag)) {
-                                    Toast.makeText(getApplicationContext(), "Error: Tag already exists", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                            }
-                            //tagList.add(tempTag);
-                            selectedPhoto.addTag(tempTag);
-                            //selectedPhoto.getTags().add(tempTag);
-                            System.out.println("Added tag " + tempTag + " To Photo: " + selectedPhoto);
-                            // Save data
-                            DataRW.writeData(albumList, path);
+                            albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).addTag((new Tag("location", inputText)));
+                            //selectedPhoto.addTag(new Tag("location", inputText));
+                            //adapter.notifyItemInserted(selectedPhoto.getTags().size() - 1);
                             adapter.notifyDataSetChanged();
+                            DataRW.writeData(albumList, path);
 
-                        }else if(radioID == R.id.personButton){
-                            // Person checked
-                            System.out.println("Person");
-                            Tag tempTag = new Tag("person", inputText);
-                            // Check if album with name already exists
-                            for(Tag t : selectedPhoto.getTags()) {
-                                if (t.equals(tempTag)) {
-                                    Toast.makeText(getApplicationContext(), "Error: Tag already exists", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                            }
-                            //tagList.add(tempTag);
-                            selectedPhoto.addTag(tempTag);
-                            //selectedPhoto.getTags().add(tempTag);
+                            /*
+                            System.out.println(albumList.get(0).getPhotosList().get(0));
+                            System.out.println(albumList.get(0).getPhotosList().get(0).getTags().toString());
                             System.out.println(selectedPhoto.getTags().toString());
-                            // Save data
-                            DataRW.writeData(albumList, path);
 
+                             */
+                        }else if(radioID == R.id.personButton){
+                            albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).addTag((new Tag("person", inputText)));
+                            //adapter.notifyItemInserted(selectedPhoto.getTags().size() - 1);
                             adapter.notifyDataSetChanged();
-
+                            DataRW.writeData(albumList, path);
                         }else{
-                                // Nothing?
+                            // No selection
                         }
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                            // Empty cancel
+                        // Cancel Empty
                     }
                 });
 
+        AlertDialog addAlert = builder.create();
+        addAlert.show();
 
-        AlertDialog searchAlert = builder.create();
-        searchAlert.show();
     }
 
     public void deleteTagButton(View view){
-        selectedPhoto.getTags().remove(selectedTagIndex);
+
+        //selectedPhoto.getTags().remove(selectedTagIndex);
+        albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags().remove(selectedTagIndex);
         adapter.notifyItemRemoved(selectedTagIndex);
-        //DataRW.writeData(albumList, path);
+        DataRW.writeData(albumList, path);
         System.out.println("removed");
         adapter.notifyDataSetChanged();
-
     }
 
     public void previousButton(View view){
@@ -189,6 +175,7 @@ public class DisplayPhoto extends AppCompatActivity {
         selectedPhoto = photoList.get(selectedPhotoIndex);
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
 
+
         ArrayList<Tag> newTagList = selectedPhoto.getTags();
         adapter = new RecyclerViewAdapterDisplay(this, newTagList,albumList);
         recyclerView.setAdapter(adapter);
@@ -197,6 +184,8 @@ public class DisplayPhoto extends AppCompatActivity {
             selectedTag = selectedPhoto.getTags().get(position);
             System.out.println("selected: " + selectedTag);
         });
+
+
 
     }
 
@@ -208,12 +197,9 @@ public class DisplayPhoto extends AppCompatActivity {
         }
         selectedPhoto = photoList.get(selectedPhotoIndex);
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
-        /*
-        tagList.clear();
-        ArrayList<Tag> newTags = selectedPhoto.getTags();
-        //tagList = newTags;
-        adapter.notifyDataSetChanged();
-        */
+
+
+
         ArrayList<Tag> newTagList = selectedPhoto.getTags();
         adapter = new RecyclerViewAdapterDisplay(this, newTagList, albumList);
         recyclerView.setAdapter(adapter);
@@ -222,8 +208,9 @@ public class DisplayPhoto extends AppCompatActivity {
             selectedTag = selectedPhoto.getTags().get(position);
             System.out.println("selected: " + selectedTag);
         });
-    }
 
+
+    }
 
 
 }
