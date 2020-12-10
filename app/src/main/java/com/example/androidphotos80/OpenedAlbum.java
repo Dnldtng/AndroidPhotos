@@ -221,6 +221,15 @@ public class OpenedAlbum extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //Read in list
+        try {
+            albumList = DataRW.readData(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
         // Got our image, need to add it to photoList
         if(requestCode == 1 && resultCode == Activity.RESULT_OK){
             Uri photoUri = data.getData();

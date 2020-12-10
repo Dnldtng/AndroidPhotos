@@ -119,7 +119,7 @@ public class DisplayPhoto extends AppCompatActivity {
                         RadioButton locationButton = searchLayout.findViewById(R.id.locationButton);
                         String inputText = addText.getText().toString();
 
-
+                        System.out.println("Selected photo index: " + selectedPhotoIndex);
                         // this breaks adding a tag
 
                         try {
@@ -129,7 +129,6 @@ public class DisplayPhoto extends AppCompatActivity {
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         }
-
 
 
                         // Cant have empty input text
