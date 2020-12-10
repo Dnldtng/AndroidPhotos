@@ -204,8 +204,10 @@ public class OpenedAlbum extends AppCompatActivity {
         path = this.getApplicationContext().getFilesDir() + "/albums.dat";
 
         Intent intent = getIntent();
-        //albumList = (ArrayList<Album>) intent.getSerializableExtra("albums");
+        albumList = (ArrayList<Album>) intent.getSerializableExtra("albums");
 
+
+        /*
         try {
             albumList = DataRW.readData(path);
         } catch (IOException e) {
@@ -213,6 +215,8 @@ public class OpenedAlbum extends AppCompatActivity {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+         */
 
         albumIndex = intent.getIntExtra("albumPosition", 0);
         recyclerView = findViewById(R.id.recyclerView2);
