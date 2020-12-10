@@ -46,6 +46,14 @@ public class OpenedAlbum extends AppCompatActivity {
     }
 
     public void deleteButton(View view){
+        if(albumList.get(albumIndex).getPhotosList().isEmpty()){
+            Toast.makeText(getApplicationContext(), "Error: No Photos to delete", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(selectedPhotoIndex>albumList.get(albumIndex).getPhotosList().size()-1 || selectedPhotoIndex<0){
+            Toast.makeText(getApplicationContext(), "Error: Nothing selected to delete", Toast.LENGTH_SHORT).show();
+            return;
+        }
         photoList.remove(selectedPhotoIndex);
         adapter.notifyItemRemoved(selectedPhotoIndex);
         DataRW.writeData(albumList, path);
