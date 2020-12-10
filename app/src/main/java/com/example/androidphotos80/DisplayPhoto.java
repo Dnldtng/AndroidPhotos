@@ -46,8 +46,6 @@ public class DisplayPhoto extends AppCompatActivity {
     private int selectedPhotoIndex;
     private int selectedTagIndex;
     private int albumIndex;
-
-    private Photo selectedPhoto;
     private Album currentAlbum;
 
     private Tag selectedTag;
@@ -79,16 +77,14 @@ public class DisplayPhoto extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         photoList = (ArrayList<Photo>) intent.getSerializableExtra("photoList");
 
         selectedPhotoIndex = intent.getIntExtra("selectedPhotoIndex", 0);
-        selectedPhoto = photoList.get(selectedPhotoIndex);
         albumIndex = intent.getIntExtra("albumIndex", 0);
         currentAlbum = albumList.get(albumIndex);
-        System.out.println("Selected Photo: " + selectedPhoto + "Tags: " + selectedPhoto.getTags());
+        //System.out.println("Selected Photo: " + selectedPhoto + "Tags: " + selectedPhoto.getTags());
 
-        imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
+        imageView.setImageURI(Uri.parse(albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getPath()));
 
         recyclerView = findViewById(R.id.recyclerView3);
 
@@ -99,12 +95,13 @@ public class DisplayPhoto extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         //TEST
-        System.out.println("TagList: " + selectedPhoto.getTags().toString());
-        System.out.println("AlbumList: " + albumList + " photoList: " + photoList + " currentAlbum: " + currentAlbum + " PhotoIndex: " + selectedPhotoIndex + " SelectedPhoto: " + selectedPhoto + " selectedTagList " + selectedPhoto.getTags().toString());
+        //System.out.println("TagList: " + selectedPhoto.getTags().toString());
+        //System.out.println("AlbumList: " + albumList + " photoList: " + photoList + " currentAlbum: " + currentAlbum + " PhotoIndex: " + selectedPhotoIndex + " SelectedPhoto: " + selectedPhoto + " selectedTagList " + selectedPhoto.getTags().toString());
 
         adapter.setOnTagItemClickListener(position -> {
             selectedTagIndex = position;
-            selectedTag = selectedPhoto.getTags().get(position);
+            selectedTag = albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags().get(selectedTagIndex);
+            //selectedTag = selectedPhoto.getTags().get(position);
             System.out.println("selected: " + selectedTag);
         });
     }
@@ -163,6 +160,7 @@ public class DisplayPhoto extends AppCompatActivity {
     }
 
     public void deleteTagButton(View view){
+        // TODO handling if nothing selected, Toast error. Also handling if empty list, other toast error
 
         //selectedPhoto.getTags().remove(selectedTagIndex);
         albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags().remove(selectedTagIndex);
@@ -173,22 +171,24 @@ public class DisplayPhoto extends AppCompatActivity {
     }
 
     public void previousButton(View view){
-        if(selectedPhotoIndex - 1 < 0){
+        if(selectedPhotoIndex - 1 == -1){
             selectedPhotoIndex = selectedPhotoIndex;
         }else{
             selectedPhotoIndex = selectedPhotoIndex - 1;
         }
-        selectedPhoto = photoList.get(selectedPhotoIndex);
-        imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
+        imageView.setImageURI(Uri.parse(albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getPath()));
 
 
-        ArrayList<Tag> newTagList = selectedPhoto.getTags();
-        adapter = new RecyclerViewAdapterDisplay(this, newTagList,albumList);
+        //ArrayList<Tag> newTagList = selectedPhoto.getTags();
+        adapter = new RecyclerViewAdapterDisplay(this, albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags(), albumList);
+        adapter.setOnTagItemClickListener(position -> {
+            selectedTagIndex = position;
+            selectedTag = albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags().get(selectedTagIndex);
+            //selectedTag = selectedPhoto.getTags().get(position);
+            System.out.println("selected: " + selectedTag);
+        });
         recyclerView.setAdapter(adapter);
-
-
-
-
+        adapter.notifyDataSetChanged();
     }
 
     public void nextButton(View view){
@@ -197,13 +197,19 @@ public class DisplayPhoto extends AppCompatActivity {
         }else{
             selectedPhotoIndex = selectedPhotoIndex + 1;
         }
-        selectedPhoto = photoList.get(selectedPhotoIndex);
-        imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
+        imageView.setImageURI(Uri.parse(albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getPath()));
 
-        ArrayList<Tag> newTagList = selectedPhoto.getTags();
-        adapter = new RecyclerViewAdapterDisplay(this, newTagList, albumList);
+
+        //ArrayList<Tag> newTagList = selectedPhoto.getTags();
+        adapter = new RecyclerViewAdapterDisplay(this, albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags(), albumList);
+        adapter.setOnTagItemClickListener(position -> {
+            selectedTagIndex = position;
+            selectedTag = albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags().get(selectedTagIndex);
+            //selectedTag = selectedPhoto.getTags().get(position);
+            System.out.println("selected: " + selectedTag);
+        });
         recyclerView.setAdapter(adapter);
-
+        adapter.notifyDataSetChanged();
 
 
     }
