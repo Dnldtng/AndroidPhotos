@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     public void searchButton(View view) {
         System.out.println("SEARCH BUTTON");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final View searchLayout = getLayoutInflater().inflate(R.layout.tag_dialog, null);
+        final View searchLayout = getLayoutInflater().inflate(R.layout.search_dialog, null);
         builder.setView(searchLayout);
         builder.setTitle("Search by tag")
                 .setCancelable(true)
@@ -192,29 +192,42 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                         if(radioID == R.id.andButton){
                             // Must meet location AND person
                             System.out.println("AND");
-                            // Check all location tags for search
+
+                            // Get AND results
                             for(Album a : albumList){
                                 for(Photo p : a.getPhotosList()){
-                                    if(p.validSearch("location", locationInput)){
+                                    if(p.hasTagSearchAND(personInput, locationInput)){
                                         resultList.add(p);
                                     }
                                 }
                             }
-                            // Added all location results, pass to activity
+
+                            // Added all AND results, pass to activity
                             Intent locationIntent = new Intent(getApplicationContext(), searchResults.class);
                             locationIntent.putExtra("results", resultList);
-                            locationIntent.putExtra("flag", 1);
+                            //locationIntent.putExtra("flag", 1);
                             startActivity(locationIntent);
+
                         }else if(radioID == R.id.orButton){
                             // Must meet location OR person checked
                             System.out.println("OR");
+
+                            // Get OR results
                             for(Album a : albumList){
                                 for(Photo p : a.getPhotosList()){
-                                    if(p.validSearch("person", personInput)){
+                                    if(p.hasTagSearchOR(personInput, personInput)){
                                         resultList.add(p);
                                     }
                                 }
                             }
+
+
+                            // Added all OR results, pass to activity
+                            Intent locationIntent = new Intent(getApplicationContext(), searchResults.class);
+                            locationIntent.putExtra("results", resultList);
+                            //locationIntent.putExtra("flag", 1);
+                            startActivity(locationIntent);
+
                         }else{
                             // TODO Add error toast dialog
                         }
