@@ -222,7 +222,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                             // Get OR results
                             for(Album a : albumList){
                                 for(Photo p : a.getPhotosList()){
-                                    if(p.hasTagSearchOR(personInput, personInput)){
+                                    //changed 2nd parameter from personInput to locationInput
+                                    if(p.hasTagSearchOR(personInput, locationInput)){
                                         resultList.add(p);
                                     }
                                 }

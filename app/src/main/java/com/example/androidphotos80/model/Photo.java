@@ -163,8 +163,8 @@ public class Photo implements Serializable {
                 foundLocation = true;
             }
         }
-
-        return (foundPerson || foundPerson);
+        //changed 2nd parameter foundPerson to foundLocation
+        return (foundPerson || foundLocation);
     }
 
     public boolean validSearch(String name, String searchString){

@@ -72,7 +72,10 @@ public class OpenedAlbum extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Error: No photo to display" , Toast.LENGTH_SHORT).show();
             return;
         }
-
+        if(selectedPhotoIndex>albumList.get(albumIndex).getPhotosList().size()-1 || selectedPhotoIndex<0){
+            Toast.makeText(getApplicationContext(), "Error: No photo selected to display" , Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent displayIntent = new Intent (this, DisplayPhoto.class);
         try {
             albumList = DataRW.readData(path);
@@ -96,7 +99,10 @@ public class OpenedAlbum extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Error: No photo to move" , Toast.LENGTH_SHORT).show();
             return;
         }
-
+       if(selectedPhotoIndex>albumList.get(albumIndex).getPhotosList().size()-1 || selectedPhotoIndex<0){
+            Toast.makeText(getApplicationContext(), "Error: No photo selected to move" , Toast.LENGTH_SHORT).show();
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final View moveLayout = getLayoutInflater().inflate(R.layout.move_dialog, null);
 
