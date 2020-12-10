@@ -1,8 +1,10 @@
 package com.example.androidphotos80;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.provider.ContactsContract;
@@ -35,6 +37,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<Album> albumList;
     private OnNoteListener mOnNoteListener;
     private Context context;
+    private Activity activity;
     private String renameAlbumText;
     private String path;
     ViewGroup parent;
@@ -57,6 +60,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent , false);
         ViewHolder holder  = new ViewHolder(view, mOnNoteListener);
+        activity = (Activity) context;
         this.parent = parent;
         return holder;
     }
@@ -109,11 +113,30 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View v) {
                 Album albumToDelete = albumList.get(position);
-                albumList.remove(albumToDelete);
+
+                // Try a reread?
+                try {
+                    albumList = DataRW.readData(path);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                //Pos instead of obj?
+                albumList.remove(position);
+                //albumList.remove(albumToDelete);
                 // Save data
                 DataRW.writeData(albumList, path);
+
                 notifyItemRemoved(position);
                 notifyDataSetChanged();
+
+                // RELOAD?
+                activity.finish();
+                Intent intent = activity.getIntent();
+                activity.startActivity(intent);
+
+
             }
         });
 

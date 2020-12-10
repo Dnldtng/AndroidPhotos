@@ -279,7 +279,6 @@ public class OpenedAlbum extends AppCompatActivity {
         //albumList = (ArrayList<Album>) intent.getSerializableExtra("albums");
 
 
-
         try {
             albumList = DataRW.readData(path);
         } catch (IOException e) {

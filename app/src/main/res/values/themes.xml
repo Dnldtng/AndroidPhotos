@@ -17,7 +17,13 @@
     <style name="Theme.AndroidPhotos80.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
     </style>
+
+    <style name="noAnimTheme" parent="android:Theme">
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
 
     <style name="Theme.AndroidPhotos80.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
