@@ -69,7 +69,7 @@ public class DisplayPhoto extends AppCompatActivity {
         }
 
         photoList = (ArrayList<Photo>) intent.getSerializableExtra("photoList");
-        //currentAlbum = (Album) intent.getSerializableExtra("currentAlbum");
+        currentAlbum = (Album) intent.getSerializableExtra("currentAlbum");
         selectedPhotoIndex = intent.getIntExtra("selectedPhotoIndex", 0);
         selectedPhoto = photoList.get(selectedPhotoIndex);
         System.out.println("Selected Photo: " + selectedPhoto);
@@ -124,6 +124,7 @@ public class DisplayPhoto extends AppCompatActivity {
                             //tagList.add(tempTag);
                             //selectedPhoto.addTag(tempTag);
                             selectedPhoto.getTags().add(tempTag);
+
                             System.out.println("Added tag " + tempTag + " To Photo: " + selectedPhoto);
                             // Save data
                             DataRW.writeData(albumList, path);
@@ -143,6 +144,7 @@ public class DisplayPhoto extends AppCompatActivity {
                             //tagList.add(tempTag);
                             //selectedPhoto.addTag(tempTag);
                             selectedPhoto.getTags().add(tempTag);
+                            photoList.get(selectedPhotoIndex).getTags().add(tempTag);
                             System.out.println(selectedPhoto.getTags().toString());
                             // Save data
                             DataRW.writeData(albumList, path);
@@ -160,8 +162,6 @@ public class DisplayPhoto extends AppCompatActivity {
                             // Empty cancel
                     }
                 });
-
-
         AlertDialog searchAlert = builder.create();
         searchAlert.show();
     }
@@ -203,12 +203,7 @@ public class DisplayPhoto extends AppCompatActivity {
         }
         selectedPhoto = photoList.get(selectedPhotoIndex);
         imageView.setImageURI(Uri.parse(selectedPhoto.getPath()));
-        /*
-        tagList.clear();
-        ArrayList<Tag> newTags = selectedPhoto.getTags();
-        //tagList = newTags;
-        adapter.notifyDataSetChanged();
-        */
+
         ArrayList<Tag> newTagList = selectedPhoto.getTags();
         adapter = new RecyclerViewAdapterDisplay(this, newTagList,albumList);
         recyclerView.setAdapter(adapter);
