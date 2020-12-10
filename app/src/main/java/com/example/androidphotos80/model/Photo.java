@@ -14,18 +14,18 @@ public class Photo implements Serializable {
     /**
      * Tag list for photo
      */
-    private ArrayList<Tag> tags;
+    public ArrayList<Tag> tags;
 
     /**
      * Caption string
      */
-    private String caption = "";
+    public String caption = "";
 
 
     /**
      * Path string of photo
      */
-    private String path;
+    public String path;
 
     /**
      * Photo constructor

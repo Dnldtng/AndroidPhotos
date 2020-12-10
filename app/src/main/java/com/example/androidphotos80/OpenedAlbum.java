@@ -54,12 +54,21 @@ public class OpenedAlbum extends AppCompatActivity {
     }
 
     public void displayButton(View view){
-        Intent intent = new Intent (this, DisplayPhoto.class);
-        intent.putExtra("albumList",(Serializable) albumList);
-        intent.putExtra("photoList", (Serializable) photoList);
-        intent.putExtra("selectedPhotoIndex", selectedPhotoIndex);
-        intent.putExtra("currentAlbum", selectedAlbum);
-        startActivity(intent);
+        Intent displayIntent = new Intent (this, DisplayPhoto.class);
+        try {
+            albumList = DataRW.readData(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        displayIntent.putExtra("albumList", albumList);
+        displayIntent.putExtra("photoList", albumList.get(albumIndex).getPhotosList());
+        displayIntent.putExtra("selectedPhotoIndex", selectedPhotoIndex);
+        displayIntent.putExtra("albumIndex", albumIndex);
+        //displayIntent.putExtra("currentAlbum", selectedAlbum);
+        startActivity(displayIntent);
     }
 
     public void moveButton(View view){
@@ -129,11 +138,14 @@ public class OpenedAlbum extends AppCompatActivity {
             System.out.println(photoList.toString());
             System.out.println(selectedAlbum.getPhotosList().toString());
             // Save data
+            System.out.println("ACTIVITY RESULT WRITE");
             DataRW.writeData(albumList, path);
             adapter.notifyDataSetChanged();
         }else{
             // Error dialog?
         }
+
+
 
     }
 
@@ -204,7 +216,10 @@ public class OpenedAlbum extends AppCompatActivity {
         path = this.getApplicationContext().getFilesDir() + "/albums.dat";
 
         Intent intent = getIntent();
+
         //albumList = (ArrayList<Album>) intent.getSerializableExtra("albums");
+
+
 
         try {
             albumList = DataRW.readData(path);
@@ -213,6 +228,8 @@ public class OpenedAlbum extends AppCompatActivity {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+
 
         albumIndex = intent.getIntExtra("albumPosition", 0);
         recyclerView = findViewById(R.id.recyclerView2);

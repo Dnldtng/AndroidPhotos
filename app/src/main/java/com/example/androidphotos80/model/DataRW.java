@@ -24,7 +24,7 @@ public class DataRW {
         }
     }
 
-    public static ArrayList<Album> readData(String path) throws IOException, ClassNotFoundException {
+    public static ArrayList<Album> readData(String path) throws IOException, ClassNotFoundException  {
         FileInputStream fis = new FileInputStream(path);
         ObjectInputStream ois = new ObjectInputStream(fis);
         ArrayList<Album> albums = (ArrayList<Album>) ois.readObject();
