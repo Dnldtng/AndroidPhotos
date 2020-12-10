@@ -86,6 +86,7 @@ public class DisplayPhoto extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView3);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        System.out.println("Selected Photo" + albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex) + " Tags: " +  albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags().toString());
         adapter = new RecyclerViewAdapterDisplay(this, albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags(), albumList);
         recyclerView.setAdapter(adapter);
 
@@ -141,6 +142,16 @@ public class DisplayPhoto extends AppCompatActivity {
                             //adapter.notifyItemInserted(selectedPhoto.getTags().size() - 1);
                             adapter.notifyDataSetChanged();
                             DataRW.writeData(albumList, path);
+
+
+                            // Maybe?
+                            /*
+                            Intent restartAdd = new Intent(getApplicationContext(), DisplayPhoto.class);
+                            restartAdd.putExtra("selectedPhotoIndex", selectedPhotoIndex);
+                            restartAdd.putExtra("albumIndex", albumIndex);
+                            finish();
+                            startActivity(restartAdd);
+                            */
 
                             /*
                             System.out.println(albumList.get(0).getPhotosList().get(0));

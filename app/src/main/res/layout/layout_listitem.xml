@@ -8,6 +8,7 @@
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
+        android:background="@drawable/album_border"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
