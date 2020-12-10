@@ -22,7 +22,6 @@ public class searchResults extends AppCompatActivity {
     private RecyclerViewAdapterSearch adapter;
     private int searchFlag;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

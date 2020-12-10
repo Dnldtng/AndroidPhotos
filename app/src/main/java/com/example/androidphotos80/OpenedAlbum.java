@@ -94,15 +94,18 @@ public class OpenedAlbum extends AppCompatActivity {
     }
 
     public void moveButton(View view){
+        // TODO Fix weird tag error on move
 
         if(albumList.get(albumIndex).getPhotosList().isEmpty()){
             Toast.makeText(getApplicationContext(), "Error: No photo to move" , Toast.LENGTH_SHORT).show();
             return;
         }
+
        if(selectedPhotoIndex>albumList.get(albumIndex).getPhotosList().size()-1 || selectedPhotoIndex<0){
             Toast.makeText(getApplicationContext(), "Error: No photo selected to move" , Toast.LENGTH_SHORT).show();
             return;
         }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final View moveLayout = getLayoutInflater().inflate(R.layout.move_dialog, null);
 
@@ -110,6 +113,15 @@ public class OpenedAlbum extends AppCompatActivity {
         // the first photo without clicking it. Null check here and default to first in list
         if(selectedPhoto == null){
             selectedPhoto = albumList.get(albumIndex).getPhotosList().get(0);
+        }
+
+        // Attempt to read to fix?
+        try {
+            albumList = DataRW.readData(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
         Album currentAlbum = albumList.get(albumIndex);
@@ -138,15 +150,38 @@ public class OpenedAlbum extends AppCompatActivity {
                         }
 
                         // Add photo
-                        destinationAlbum.addPhoto(albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex));
+                        Photo addPhoto =  albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex);
+                        System.out.println("Adding photo:" + addPhoto + " With TagList: " + addPhoto.getTags().toString());
+                        destinationAlbum.addPhoto(addPhoto);
+                        //destinationAlbum.addPhoto(albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex));
                         //DataRW.writeData(albumList, path);
 
                         // Remove photo
                         albumList.get(albumIndex).getPhotosList().remove(selectedPhotoIndex);
-
+                        System.out.println("PhotoList after removal: " + albumList.get(albumIndex).getPhotosList().toString());
                         DataRW.writeData(albumList, path);
+                        //Re read first?
+                        try {
+                            albumList = DataRW.readData(path);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+
                         //adapter.notifyItemRemoved(selectedPhotoIndex);
+                        //System.out.println("Removed Index: " + selectedPhotoIndex);
+
+                        //Test?
+                        //recyclerView.removeViewAt(selectedPhotoIndex);
                         adapter.notifyDataSetChanged();
+
+                        //Reload this activity??
+                        finish();
+                        Intent restartMove = new Intent(getApplicationContext(), OpenedAlbum.class);
+                        restartMove.putExtra("albumPosition", albumIndex);
+                        startActivity(restartMove);
+
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -263,7 +298,8 @@ public class OpenedAlbum extends AppCompatActivity {
         selectedAlbum = albumList.get(albumIndex);
         //getSupportActionBar().setTitle(selectedAlbum.getName());
         System.out.println("INSIDE ALBUM :" + selectedAlbum);
-        photoList = selectedAlbum.getPhotosList();
+        //photoList = selectedAlbum.getPhotosList();
+        photoList = albumList.get(albumIndex).getPhotosList();
         System.out.println(photoList.toString());
 
         adapter = new RecyclerViewAdapterPhotos(this, photoList);

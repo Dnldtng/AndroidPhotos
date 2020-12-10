@@ -35,8 +35,6 @@ public class Photo implements Serializable {
         this.path = p;
         tags = new ArrayList<Tag>();
     }
-
-
     /**
      * Returns path string of photo
      * @return Path string
