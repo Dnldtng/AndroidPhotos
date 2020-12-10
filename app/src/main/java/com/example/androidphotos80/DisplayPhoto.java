@@ -120,13 +120,18 @@ public class DisplayPhoto extends AppCompatActivity {
                         String inputText = addText.getText().toString();
                         int radioID = rg.getCheckedRadioButtonId();
                         if(radioID == R.id.locationButton){
+                            Tag temp = new Tag("location", inputText);
+                            for(Tag t : albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags()) {
+                                if (t.equals(temp)) {
+                                    Toast.makeText(getApplicationContext(), "Error: Tag already exists", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            }
                             albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).addTag((new Tag("location", inputText)));
                             //selectedPhoto.addTag(new Tag("location", inputText));
                             //adapter.notifyItemInserted(selectedPhoto.getTags().size() - 1);
-
                             adapter.notifyDataSetChanged();
                             DataRW.writeData(albumList, path);
-
 
                             /*
                             System.out.println(albumList.get(0).getPhotosList().get(0));
@@ -136,6 +141,13 @@ public class DisplayPhoto extends AppCompatActivity {
 
                              */
                         }else if(radioID == R.id.personButton){
+                            Tag temp = new Tag("person", inputText);
+                            for(Tag t : albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags()) {
+                                if (t.equals(temp)) {
+                                    Toast.makeText(getApplicationContext(), "Error: Tag already exists", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            }
                             albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).addTag((new Tag("person", inputText)));
                             //adapter.notifyItemInserted(selectedPhoto.getTags().size() - 1);
                             adapter.notifyDataSetChanged();
@@ -161,8 +173,16 @@ public class DisplayPhoto extends AppCompatActivity {
 
     public void deleteTagButton(View view){
         // TODO handling if nothing selected, Toast error. Also handling if empty list, other toast error
-
-        //selectedPhoto.getTags().remove(selectedTagIndex);
+        //TODO deleteing photo if album is empty
+        if(albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags().isEmpty()){
+            Toast.makeText(getApplicationContext(), "Error: No Tags to delete", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        System.out.println(""+albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags().size());
+        if(selectedTagIndex>albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags().size()-1 || selectedTagIndex<0){
+            Toast.makeText(getApplicationContext(), "Error: Nothing selected to delete", Toast.LENGTH_SHORT).show();
+            return;
+        }
         albumList.get(albumIndex).getPhotosList().get(selectedPhotoIndex).getTags().remove(selectedTagIndex);
         adapter.notifyItemRemoved(selectedTagIndex);
         DataRW.writeData(albumList, path);
