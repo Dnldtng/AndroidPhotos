@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
@@ -134,6 +135,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                     }
                 }
 
+                try {
+                    albumList = DataRW.readData(path);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
                 Album newAlbum = new Album(newAlbumText);
                 albumList.add(newAlbum);
                 // Save data
@@ -202,13 +210,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                                     }
                                 }
                             }
-
                             // Added all AND results, pass to activity
                             Intent locationIntent = new Intent(getApplicationContext(), searchResults.class);
                             locationIntent.putExtra("results", resultList);
                             //locationIntent.putExtra("flag", 1);
                             startActivity(locationIntent);
-
                         }else if(radioID == R.id.orButton){
                             // Must meet location OR person checked
                             System.out.println("OR");
@@ -222,15 +228,55 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                                 }
                             }
 
-
                             // Added all OR results, pass to activity
                             Intent locationIntent = new Intent(getApplicationContext(), searchResults.class);
                             locationIntent.putExtra("results", resultList);
                             //locationIntent.putExtra("flag", 1);
                             startActivity(locationIntent);
 
+                        }else if (radioID == R.id.singleButton || radioID == -1){
+                            // Single tag search
+                            // If both fields are empty, or both are populated error for single tag
+                            if((personInput.isEmpty() && locationInput.isEmpty()) || (!personInput.isEmpty() && !locationInput.isEmpty())){
+                                Toast.makeText(getApplicationContext(), "Error: One tag search must be filled for single tag search." , Toast.LENGTH_SHORT).show();
+                                //System.out.println("Person: " + personInput + ", Location: " + locationInput);
+                                return;
+                            }else{
+                                // Search is ok
+                                System.out.println("OK SEARCH");
+                                // Check what type of search
+                                if(personInput.isEmpty() && (!locationInput.isEmpty())){
+                                    // Location search
+                                    for(Album a : albumList){
+                                        for(Photo p : a.getPhotosList()){
+                                            if(p.validSearch("location", locationInput)){
+                                                resultList.add(p);
+                                            }
+                                        }
+                                    }
+                                    // Added all location results, pass to activity
+                                    Intent locationIntent = new Intent(getApplicationContext(), searchResults.class);
+                                    locationIntent.putExtra("results", resultList);
+                                    startActivity(locationIntent);
+                                }else if((!personInput.isEmpty()) && (locationInput.isEmpty())){
+                                    // Person search
+                                    for(Album a : albumList){
+                                        for(Photo p : a.getPhotosList()){
+                                            if(p.validSearch("person", personInput)){
+                                                resultList.add(p);
+                                            }
+                                        }
+                                    }
+                                    // Added all person results, pass to activity
+                                    Intent locationIntent = new Intent(getApplicationContext(), searchResults.class);
+                                    locationIntent.putExtra("results", resultList);
+                                    startActivity(locationIntent);
+                                }
+
+                            }
+
                         }else{
-                            // TODO Add error toast dialog
+                            // Everything should already be caught in singletag
                         }
                     }
                 })
