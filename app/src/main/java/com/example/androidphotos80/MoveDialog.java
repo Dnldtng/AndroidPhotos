@@ -67,7 +67,6 @@ public class MoveDialog extends AppCompatDialogFragment {
 
         currentAlbum = albumList.get(currentAlbumIndex);
 
-
         ArrayList<Album> destinationList = new ArrayList<Album>(albumList);
 
         // Get rid of current album for destination list

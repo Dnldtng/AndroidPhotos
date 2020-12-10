@@ -124,9 +124,47 @@ public class Photo implements Serializable {
         this.caption = caption;
     }
 
-    public boolean hasTagSearchAND(String searchString){
-        // Return true if there is a name tag and a location tag
-        return false;
+    public boolean hasTagSearchAND(String searchPerson, String searchLocation){
+        // Return true if there is a name tag AND a location tag substring match
+        boolean foundPerson = false;
+        boolean foundLocation = false;
+
+        // Person search
+        for(Tag t : tags){
+            if(t.getName().equalsIgnoreCase("person") && t.getValue().startsWith(searchPerson)){
+                foundPerson = true;
+            }
+        }
+
+        // Location search
+        for(Tag t : tags){
+            if(t.getName().equalsIgnoreCase("location") && t.getValue().startsWith(searchLocation)){
+                foundLocation = true;
+            }
+        }
+
+        return (foundLocation && foundPerson);
+    }
+
+    public boolean hasTagSearchOR(String searchPerson, String searchLocation){
+        // Return true if there is a name tag OR a location tag
+        boolean foundPerson = false;
+        boolean foundLocation = false;
+
+        // Person search
+        for(Tag t : tags){
+            if(t.getName().equalsIgnoreCase("person") && t.getValue().startsWith(searchPerson)){
+                foundPerson = true;
+            }
+        }
+        // Location search
+        for(Tag t : tags){
+            if(t.getName().equalsIgnoreCase("location") && t.getValue().startsWith(searchLocation)){
+                foundLocation = true;
+            }
+        }
+
+        return (foundPerson || foundPerson);
     }
 
     public boolean validSearch(String name, String searchString){

@@ -10,7 +10,10 @@ import android.widget.Toolbar;
 
 import com.example.androidphotos80.model.Photo;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class searchResults extends AppCompatActivity {
 
@@ -28,18 +31,24 @@ public class searchResults extends AppCompatActivity {
 
         // Get intent result Photos for display
         Intent intent = getIntent();
-        searchFlag = intent.getIntExtra("flag", 0);
-
-        if(searchFlag == 1){
-            // Location Search
-        }else if(searchFlag == 2){
-            // Person search
+        //searchFlag = intent.getIntExtra("flag", 0);
+        resultPhotos = (ArrayList<Photo>) intent.getSerializableExtra("results");
+        /*
+        Set<Photo> resultSet = new HashSet<Photo>(resultPhotos);
+        resultPhotos = new ArrayList<Photo>(resultSet);
+         */
+        ArrayList<Photo> finalResults = new ArrayList<>();
+        // Remove duplicates from results
+        for(Photo p : resultPhotos){
+            if(!finalResults.contains(p)){
+                finalResults.add(p);
+            }
         }
 
         recyclerView = findViewById(R.id.recyclerViewSearch);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new RecyclerViewAdapterSearch(this, resultPhotos);
+        adapter = new RecyclerViewAdapterSearch(this, finalResults);
         recyclerView.setAdapter(adapter);
 
 
