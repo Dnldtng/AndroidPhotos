@@ -222,6 +222,8 @@ public class OpenedAlbum extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         //Read in list
+
+
         try {
             albumList = DataRW.readData(path);
         } catch (IOException e) {
@@ -229,6 +231,8 @@ public class OpenedAlbum extends AppCompatActivity {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+
 
         // Got our image, need to add it to photoList
         if(requestCode == 1 && resultCode == Activity.RESULT_OK){
@@ -265,10 +269,13 @@ public class OpenedAlbum extends AppCompatActivity {
 
 
             // The bad thing
+
             Intent restartIntent  = new Intent(this, OpenedAlbum.class);
             restartIntent.putExtra("albumPosition", albumIndex);
             finish();
             startActivity(restartIntent);
+
+
 
         }else{
             // Error dialog?
