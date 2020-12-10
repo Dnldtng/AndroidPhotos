@@ -124,6 +124,10 @@ public class Photo implements Serializable {
         this.caption = caption;
     }
 
+    public boolean hasTagSearchAND(String searchString){
+        // Return true if there is a name tag and a location tag
+        return false;
+    }
 
     public boolean validSearch(String name, String searchString){
             for(Tag t: tags){
