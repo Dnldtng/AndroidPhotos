@@ -45,7 +45,6 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
         return holder;
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Load image into imageView

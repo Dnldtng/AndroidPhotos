@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.provider.OpenableColumns;
 import android.view.View;
 import android.view.contentcapture.DataShareWriteAdapter;
@@ -68,14 +69,29 @@ public class OpenedAlbum extends AppCompatActivity {
     }
 
     public void displayButton(View view){
+
+        // Try read first?
+        try {
+            albumList = DataRW.readData(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Photolist: " + albumList.get(albumIndex).getPhotosList().toString());
+
         if(albumList.get(albumIndex).getPhotosList().isEmpty()){
             Toast.makeText(getApplicationContext(), "Error: No photo to display" , Toast.LENGTH_SHORT).show();
             return;
         }
-        if(selectedPhotoIndex>albumList.get(albumIndex).getPhotosList().size()-1 || selectedPhotoIndex<0){
+
+        if(selectedPhotoIndex > albumList.get(albumIndex).getPhotosList().size() - 1 || selectedPhotoIndex < 0){
             Toast.makeText(getApplicationContext(), "Error: No photo selected to display" , Toast.LENGTH_SHORT).show();
             return;
         }
+
+
         Intent displayIntent = new Intent (this, DisplayPhoto.class);
         try {
             albumList = DataRW.readData(path);
@@ -208,10 +224,8 @@ public class OpenedAlbum extends AppCompatActivity {
         // Got our image, need to add it to photoList
         if(requestCode == 1 && resultCode == Activity.RESULT_OK){
             Uri photoUri = data.getData();
-            System.out.println("This is the print: " + photoUri);
             Photo photoToAdd = new Photo(photoUri.toString());
             File photoFile = new File(photoUri.getPath());
-            System.out.println("File PATH: " + photoFile.getAbsolutePath());
             //photoToAdd.setCaption(photoFile.getName());
             photoToAdd.setCaption(getFileName(photoUri));
 
@@ -231,14 +245,22 @@ public class OpenedAlbum extends AppCompatActivity {
                     }
                 }
             }
-
-            photoList.add(photoToAdd);
+            System.out.println("Added photo: " + photoToAdd + " To album" + albumList.get(albumIndex).toString()) ;
+            albumList.get(albumIndex).getPhotosList().add(photoToAdd);
             System.out.println(photoList.toString());
             System.out.println(selectedAlbum.getPhotosList().toString());
             // Save data
             System.out.println("ACTIVITY RESULT WRITE");
             DataRW.writeData(albumList, path);
             adapter.notifyDataSetChanged();
+
+
+            // The bad thing
+            Intent restartIntent  = new Intent(this, OpenedAlbum.class);
+            restartIntent.putExtra("albumPosition", albumIndex);
+            finish();
+            startActivity(restartIntent);
+
         }else{
             // Error dialog?
         }
