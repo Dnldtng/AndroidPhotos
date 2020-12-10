@@ -5,7 +5,7 @@
     android:id="@+id/parent_layout2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#F8CACA">
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/photoThumbnail"

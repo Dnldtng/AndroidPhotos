@@ -27,6 +27,7 @@ public class searchResults extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        getSupportActionBar().setTitle("Search Results");
 
         // Get intent result Photos for display
         Intent intent = getIntent();

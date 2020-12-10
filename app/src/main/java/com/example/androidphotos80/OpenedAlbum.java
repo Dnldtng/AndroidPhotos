@@ -212,7 +212,7 @@ public class OpenedAlbum extends AppCompatActivity {
             Photo photoToAdd = new Photo(photoUri.toString());
             File photoFile = new File(photoUri.getPath());
             System.out.println("File PATH: " + photoFile.getAbsolutePath());
-            photoToAdd.setCaption(photoFile.getName());
+            //photoToAdd.setCaption(photoFile.getName());
             photoToAdd.setCaption(getFileName(photoUri));
 
             // Check if photo already exists in any album
@@ -301,7 +301,7 @@ public class OpenedAlbum extends AppCompatActivity {
         //this was causing null pointer because no adapter attached
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         selectedAlbum = albumList.get(albumIndex);
-        //getSupportActionBar().setTitle(selectedAlbum.getName());
+        getSupportActionBar().setTitle(selectedAlbum.getName());
         System.out.println("INSIDE ALBUM :" + selectedAlbum);
         //photoList = selectedAlbum.getPhotosList();
         photoList = albumList.get(albumIndex).getPhotosList();
