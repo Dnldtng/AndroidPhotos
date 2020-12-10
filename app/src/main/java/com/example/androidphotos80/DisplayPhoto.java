@@ -185,11 +185,7 @@ public class DisplayPhoto extends AppCompatActivity {
         ArrayList<Tag> newTagList = selectedPhoto.getTags();
         adapter = new RecyclerViewAdapterDisplay(this, newTagList,albumList);
         recyclerView.setAdapter(adapter);
-        adapter.setOnTagItemClickListener(position -> {
-            selectedTagIndex = position;
-            selectedTag = selectedPhoto.getTags().get(position);
-            System.out.println("selected: " + selectedTag);
-        });
+
 
 
 
@@ -207,11 +203,7 @@ public class DisplayPhoto extends AppCompatActivity {
         ArrayList<Tag> newTagList = selectedPhoto.getTags();
         adapter = new RecyclerViewAdapterDisplay(this, newTagList, albumList);
         recyclerView.setAdapter(adapter);
-        adapter.setOnTagItemClickListener(position -> {
-            selectedTagIndex = position;
-            selectedTag = selectedPhoto.getTags().get(position);
-            System.out.println("selected: " + selectedTag);
-        });
+
 
 
     }
