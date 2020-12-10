@@ -83,6 +83,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 renameAlbumText = input.getText().toString();
+
+                // Cant have empty album names
+                if(renameAlbumText.isEmpty()){
+                    Toast.makeText(parent.getContext(), "Error: Album name cannot be empty" , Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // Check if album with name already exists
                 for(Album a : albumList){
                     if(a.getName().equalsIgnoreCase(renameAlbumText)){

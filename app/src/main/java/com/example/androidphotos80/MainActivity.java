@@ -127,6 +127,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             public void onClick(DialogInterface dialog, int which) {
                 newAlbumText = input.getText().toString();
 
+                // No empty album names
+                if(newAlbumText.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Error: Album name cannot be empty" , Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // Check if album with name already exists
                 for(Album a : albumList){
                     if(a.getName().equalsIgnoreCase(newAlbumText)){

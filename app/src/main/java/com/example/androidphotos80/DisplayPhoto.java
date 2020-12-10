@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,7 @@ public class DisplayPhoto extends AppCompatActivity {
     private Button previousButton, nextButton;
     private RecyclerView recyclerView;
     private RecyclerViewAdapterDisplay adapter;
+
 
     private ArrayList<Photo> photoList;
 
@@ -112,7 +114,19 @@ public class DisplayPhoto extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         RadioGroup rg = searchLayout.findViewById(R.id.radioGroup);
                         EditText addText = searchLayout.findViewById(R.id.searchText);
+                        RadioButton locationButton = searchLayout.findViewById(R.id.locationButton);
                         String inputText = addText.getText().toString();
+
+                        // Cant have empty input text
+                        if(inputText.isEmpty()){
+                            Toast.makeText(getApplicationContext(), "Error: Tag cannot be empty" , Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        // Check location by default
+                        rg.check(R.id.locationButton);
+                        //locationButton.setChecked(true);
+
                         int radioID = rg.getCheckedRadioButtonId();
                         if(radioID == R.id.locationButton){
                             Tag temp = new Tag("location", inputText);
