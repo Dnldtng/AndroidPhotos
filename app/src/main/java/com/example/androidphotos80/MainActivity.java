@@ -228,22 +228,43 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
                         }else if (radioID == R.id.singleButton || radioID == -1){
                             // Single tag search
-                            System.out.println("SINGLE");
-                            // Check only one field is populated.
                             // If both fields are empty, or both are populated error for single tag
-                            if((personInput.isEmpty() && locationInput.isEmpty()) || (personInput.isEmpty() && !locationInput.isEmpty()) || (!personInput.isEmpty() && locationInput.isEmpty())  ){
+                            if((personInput.isEmpty() && locationInput.isEmpty()) || (!personInput.isEmpty() && !locationInput.isEmpty())){
                                 Toast.makeText(getApplicationContext(), "Error: One tag search must be filled for single tag search." , Toast.LENGTH_SHORT).show();
                                 //System.out.println("Person: " + personInput + ", Location: " + locationInput);
-                                if(personInput.equalsIgnoreCase("")){
-                                    System.out.print("Person Empty");
-                                }
-                                if(locationInput.equalsIgnoreCase("")){
-                                    System.out.print("Location Empty");
-                                }
                                 return;
                             }else{
                                 // Search is ok
                                 System.out.println("OK SEARCH");
+                                // Check what type of search
+                                if(personInput.isEmpty() && (!locationInput.isEmpty())){
+                                    // Location search
+                                    for(Album a : albumList){
+                                        for(Photo p : a.getPhotosList()){
+                                            if(p.validSearch("location", locationInput)){
+                                                resultList.add(p);
+                                            }
+                                        }
+                                    }
+                                    // Added all location results, pass to activity
+                                    Intent locationIntent = new Intent(getApplicationContext(), searchResults.class);
+                                    locationIntent.putExtra("results", resultList);
+                                    startActivity(locationIntent);
+                                }else if((!personInput.isEmpty()) && (locationInput.isEmpty())){
+                                    // Person search
+                                    for(Album a : albumList){
+                                        for(Photo p : a.getPhotosList()){
+                                            if(p.validSearch("person", personInput)){
+                                                resultList.add(p);
+                                            }
+                                        }
+                                    }
+                                    // Added all person results, pass to activity
+                                    Intent locationIntent = new Intent(getApplicationContext(), searchResults.class);
+                                    locationIntent.putExtra("results", resultList);
+                                    startActivity(locationIntent);
+                                }
+
                             }
 
                         }else{
