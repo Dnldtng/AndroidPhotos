@@ -52,6 +52,16 @@ public class OpenedAlbum extends AppCompatActivity {
     }
 
     public void deleteButton(View view){
+
+        // Read first
+        try {
+            albumList = DataRW.readData(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
         if(albumList.get(albumIndex).getPhotosList().isEmpty()){
             Toast.makeText(getApplicationContext(), "Error: No Photos to delete", Toast.LENGTH_SHORT).show();
             return;
@@ -60,11 +70,20 @@ public class OpenedAlbum extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Error: Nothing selected to delete", Toast.LENGTH_SHORT).show();
             return;
         }
-        photoList.remove(selectedPhotoIndex);
-        adapter.notifyItemRemoved(selectedPhotoIndex);
+
+        albumList.get(albumIndex).getPhotosList().remove(selectedPhotoIndex);
+        //photoList.remove(selectedPhotoIndex);
+        //adapter.notifyItemRemoved(selectedPhotoIndex);
         DataRW.writeData(albumList, path);
         System.out.println("removed");
-        adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
+
+
+        Intent deleteIntent  = new Intent(this, OpenedAlbum.class);
+        deleteIntent.putExtra("albumPosition", albumIndex);
+        finish();
+        startActivity(deleteIntent);
+
     }
 
     public void displayButton(View view){
