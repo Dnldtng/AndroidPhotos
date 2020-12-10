@@ -139,7 +139,8 @@ public class OpenedAlbum extends AppCompatActivity {
                         currentAlbum.getPhotosList().remove(selectedPhotoIndex);
 
                         DataRW.writeData(albumList, path);
-                        adapter.notifyItemRemoved(selectedPhotoIndex);
+                        //adapter.notifyItemRemoved(selectedPhotoIndex);
+                        adapter.notifyDataSetChanged();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -151,24 +152,6 @@ public class OpenedAlbum extends AppCompatActivity {
 
         AlertDialog moveAlert = builder.create();
         moveAlert.show();
-    }
-
-    public void moveUpdate(int photoIndex, Album albumRemove){
-        //destAlbum.addPhoto(addPhoto);
-
-        // Try removing photo here instead??
-
-        /*
-        Album albumRemove = albumList.get(albumIndex);
-        albumRemove.getPhotosList().remove(photoIndex);
-        DataRW.writeData(albumList, path);
-        */
-
-        //adapter.notifyItemRemoved(photoIndex);
-        adapter.notifyItemRangeChanged(photoIndex, photoList.size());
-        //adapter.notifyDataSetChanged();
-
-
     }
 
     @Override
